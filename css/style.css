@@ -34,7 +34,9 @@ body {
 	color: var(--text-color);
 	margin: 0;
 	padding: 0;
-	overflow: hidden;
+	height: 100%;
+	box-sizing: border-box;
+	overflow-x: hidden;
 }
 
 /* Títulos, botones, navegación */
@@ -87,7 +89,7 @@ button {
 
 .users {
 	background-color: var(--bg-color-secundary);
-	min-height: 100vh;
+	min-height: calc(100vh - 13.5rem);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -161,4 +163,22 @@ button {
 
 .user_card:hover .user_name{
 	color: var(--bg-color);
+}
+
+footer {
+	display: flex;
+	justify-content: center;
+	background-color: var(--bg-color);
+	height: 5rem;
+	padding: 0 2rem;
+}
+
+.footer__info {
+	display: flex;
+	align-items: center;
+}
+
+.footer__info span {
+	font-size: 1.25rem;
+	font-weight: bold;
 }
