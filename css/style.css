@@ -12,31 +12,32 @@
    PALETA DE COLORES - RindeMás
 ============================ */
 :root {
-	--bg-color: #0B0F1A;
-	--bg-color-secundary: #F0F9FF;
-	--primary-color: #3F72AF;
-	--primary-light: #9AC6FF;
-	--text-color: #F5F9FF;
-	--text-color-secundary: #29313D;
-	--text-color-other: #707E8B;
-	--accent-color: #FFD369;
-	--card-color: #1F1F2E;
-	--card--bg: #d7d8d8;
+  --bg-color: #0B0F1A;
+  --bg-color-secundary: #F0F9FF;
+  --primary-color: #3F72AF;
+  --primary-light: #9AC6FF;
+  --text-color: #F5F9FF;
+  --text-color-secundary: #29313D;
+  --text-color-other: #707E8B;
+  --accent-color: #FFD369;
+  --card-color: #1F1F2E;
+  --card--bg: #d7d8d8;
 }
 
 /* ============================
    TIPOGRAFÍA POR ELEMENTO
 ============================ */
 
+html,
 body {
-	font-family: 'Titillium Web', sans-serif;
-	background-color: var(--bg-color);
-	color: var(--text-color);
-	margin: 0;
-	padding: 0;
-	height: 100%;
-	box-sizing: border-box;
-	overflow: hidden;
+  font-family: 'Titillium Web', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Títulos, botones, navegación */
@@ -45,7 +46,11 @@ h2,
 h3,
 nav,
 button {
-	font-family: 'Rajdhani', sans-serif;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+main {
+  flex: 1;
 }
 
 /* ============================
@@ -53,16 +58,16 @@ button {
 ============================ */
 
 .header {
-	display: flex;
-	justify-content: center;
-	background-color: var(--primary-color);
-	height: 5rem;
-	padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  background-color: var(--primary-color);
+  height: 5rem;
+  padding: 0 2rem;
 }
 
 .header__info {
-	display: flex;
-	gap: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .header__title {
@@ -72,15 +77,15 @@ button {
 }
 
 .header__icon-svg {
-	color: var(--accent-color);
-	vertical-align: middle;
-	display: inline-block;
+  color: var(--accent-color);
+  vertical-align: middle;
+  display: inline-block;
 }
 
 .header__title h1 {
-	font-size: 1.75rem;
-	color: var(--text-color);
-	margin: 0;
+  font-size: 1.75rem;
+  color: var(--text-color);
+  margin: 0;
 }
 
 /* ============================
@@ -88,29 +93,33 @@ button {
 ============================ */
 
 .users {
-	background-color: var(--bg-color-secundary);
-	min-height: calc(100vh - 13.5rem);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 2rem;
-	gap: 3rem;
+  background-color: var(--bg-color-secundary);
+  min-height: calc(100vh - 13.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 3rem;
+}
+
+.users--hidden {
+  display: none;
 }
 
 /*Estilos para título y subtítulo*/
 
 .users__info {
-	text-align: center;
+  text-align: center;
 }
 
 .users__info--title {
-	color: var(--text-color-secundary);
-	font-size: 2.5rem;
+  color: var(--text-color-secundary);
+  font-size: 2.5rem;
 }
 
 .users__info--subtitle {
-	color: var(--text-color-other);
-	font-size: 1.25rem;
+  color: var(--text-color-other);
+  font-size: 1.25rem;
 }
 
 /*Estilos para las cards de los usuarios*/
@@ -161,8 +170,8 @@ button {
   border: 2px dashed var(--bg-color);
 }
 
-.user_card:hover .user_name{
-	color: var(--bg-color);
+.user_card:hover .user_name {
+  color: var(--bg-color);
 }
 
 /* ============================
@@ -177,11 +186,11 @@ button {
   max-width: 400px;
   margin: 2rem auto;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .form--hidden {
-	display: none;
+  display: none;
 }
 
 /*Estilos para el contenido del formulario*/
@@ -238,25 +247,86 @@ button {
   background-color: var(--bg-color);
 }
 
+/* ============================
+	ESTILOS PARA EL MENSAJE DE
+  AGREGAR UN NUEVO USUARIO
+============================ */
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes fadeOutScale {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+}
+
+.message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #d1fae5;
+  color: #065f46;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.message--show {
+  animation: fadeInScale 0.6s ease-out forwards;
+  pointer-events: auto;
+}
+
+.message--hide {
+  animation: fadeOutScale 0.3s forwards;
+}
+
+
+.message--hidden {
+  display: none;
+}
 
 /* ============================
 	ESTILOS PARA EL FOOTER
 ============================ */
 
 footer {
-	display: flex;
-	justify-content: center;
-	background-color: var(--bg-color);
-	height: 5rem;
-	padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg-color);
+  height: 5rem;
+  padding: 0 2rem;
 }
 
 .footer__info {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .footer__info span {
-	font-size: 1.25rem;
-	font-weight: bold;
+  font-size: 1.25rem;
+  font-weight: bold;
 }
