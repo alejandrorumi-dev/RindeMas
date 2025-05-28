@@ -13,8 +13,7 @@
 	<header class="header">
 		<div class="header__info">
 			<div class="header__title">
-				<svg class="header__icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="44"
-					height="44">
+				<svg class="header__icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="44" height="44">
 					<path fill="currentColor" d="M13 10V3L4 14h7v7l9-11h-7z" />
 				</svg>
 				<h1>RindeMás</h1>
@@ -22,47 +21,46 @@
 		</div>
 	</header>
 
-	<section class="users">
-		<div class="users__info">
-			<h2 class="users__info--title">¿Quién va a entrenar hoy?</h2>
-			<h3 class="users__info--subtitle">Selecciona tu perfil para comenzar</h3>
-		</div>
+	<main>
+		<section class="users" id="users">
+			<div class="users__info">
+				<h2 class="users__info--title">¿Quién va a entrenar hoy?</h2>
+				<h3 class="users__info--subtitle">Selecciona tu perfil para comenzar</h3>
+			</div>
 
-		<!-- Este será el único botón visible al inicio -->
-		<div class="users__add">
-			<button id="add-user-btn" class="user_card add_user">
-				<svg class="users__icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-					<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-					<g id="SVGRepo_iconCarrier">
-						<path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round"
-							stroke-linejoin="round"></path>
-					</g>
-				</svg>
-				<span class="user_name">Añadir Usuario</span>
-			</button>
-		</div>
-	</section>
+			<div class="users__add">
+				<button id="add-user-btn" class="user_card add_user">
+					<svg class="users__icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+					<span class="user_name">Añadir Usuario</span>
+				</button>
+			</div>
+		</section>
 
-	<section class="form form--hidden" id="form">
-		<form class="form__content" id="form__content">
-			<h2 class="form__title">Crear nuevo usuario</h2>
+		<section class="form form--hidden" id="form">
+			<form class="form__content" id="form__content">
+				<h2 class="form__title">Crear nuevo usuario</h2>
 
-			<label for="form__name" class="form__label">Nombre:</label>
-			<input type="text" id="form__name" name="nombre" class="form__input" required>
+				<label for="form__name" class="form__label">Nombre:</label>
+				<input type="text" id="form__name" name="nombre" class="form__input" required>
 
-			<label for="form__lastName" class="form__label">Apellido:</label>
-			<input type="text" id="form__lastName" name="apellido" class="form__input" required>
+				<label for="form__lastName" class="form__label">Apellido:</label>
+				<input type="text" id="form__lastName" name="apellido" class="form__input" required>
 
-			<button type="submit" class="form__submit">Crear usuario</button>
-		</form>
-	</section>
+				<button type="submit" class="form__submit">Crear usuario</button>
+			</form>
+		</section>
+	</main>
+
+	<div class="message message--hidden" id="message">Usuario añadido correctamente ✅</div>
 
 	<footer class="footer">
 		<div class="footer__info">
-			<span class="footer__info--modify">&copy; 2025 RindeMás. Todos los derechos reservados</span>
+			<span class="footer__info--modify">&copy; 2025 RindeMás. Todos los derechos reservados.</span>
 		</div>
 	</footer>
+
 	<script src="js/script.js"></script>
 </body>
 
