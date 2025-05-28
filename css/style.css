@@ -36,7 +36,7 @@ body {
 	padding: 0;
 	height: 100%;
 	box-sizing: border-box;
-	overflow-x: hidden;
+	overflow: hidden;
 }
 
 /* Títulos, botones, navegación */
