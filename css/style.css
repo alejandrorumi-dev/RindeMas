@@ -1,0 +1,42 @@
+/* ============================
+   FUENTES PRINCIPALES
+============================ */
+
+/* Titillium Web: para textos generales */
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap');
+
+/* Rajdhani: para títulos, botones y elementos destacados */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+
+/* ============================
+   PALETA DE COLORES - RindeMás
+============================ */
+:root {
+	--bg-color: #0B0F1A;
+	--primary-color: #3F72AF;
+	--primary-light: #9AC6FF;
+	--text-color: #F5F9FF;
+	--accent-color: #FFD369;
+	--card-color: #1F1F2E;
+}
+
+/* ============================
+   TIPOGRAFÍA POR ELEMENTO
+============================ */
+
+body {
+	font-family: 'Titillium Web', sans-serif;
+	background-color: var(--bg-color);
+	color: var(--text-color);
+	margin: 0;
+	padding: 0;
+}
+
+/* Títulos, botones, navegación */
+h1,
+h2,
+h3,
+nav,
+button {
+	font-family: 'Rajdhani', sans-serif;
+}
