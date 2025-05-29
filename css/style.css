@@ -141,18 +141,58 @@ main {
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: center;
+  position: relative;
 }
 
 .users__cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 3rem;
-  justify-items: center ;
+  justify-items: center;
   width: 100%;
   max-width: 1000px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
+
+/* Posiciona los botones arriba a la derecha */
+.user_actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Mostrar los botones al pasar el cursor por encima */
+.user_card:hover .user_actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Estilo de los botones */
+.user_actions button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 50%;
+}
+
+.user_actions svg {
+  width: 20px;
+  height: 20px;
+  stroke: #555;
+  transition: stroke 0.2s;
+}
+
+.user_actions button:hover svg {
+  stroke: #000;
+}
+
 
 /*Estilos para el icono de las cards*/
 
