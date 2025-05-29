@@ -11,10 +11,23 @@ document.addEventListener("DOMContentLoaded", () => {
 	const formSection = document.getElementById("form");
 	const form = document.getElementById("form__content");
 	const message = document.getElementById("message");
+	const formBackBtn = document.querySelector(".form__back-btn");
 
 	// Inicializar referencias a elementos después de que el DOM esté listo
 	submitBtn = document.querySelector(".form__submit");
 	formTitle = document.querySelector(".form__title");
+
+	// Volver a inicio
+	formBackBtn.addEventListener("click", () => {
+		formSection.classList.remove("form--show");
+		setTimeout(() => {
+			formSection.classList.add("form--hidden");
+			usersSection.classList.remove("users--hidden");
+			form.reset();
+			submitBtn.textContent = "Crear usuario";
+			formTitle.textContent = "Crear nuevo usuario";
+		}, 300);
+	});
 
 	// Mostrar formulario
 	addUserBtn.addEventListener("click", () => {
@@ -39,19 +52,54 @@ document.addEventListener("DOMContentLoaded", () => {
 		const lastName = document.getElementById("form__lastName").value.trim();
 		let storedUsers = JSON.parse(localStorage.getItem("users")) || [];
 
+		const fullName = `${firstName.toLowerCase()} ${lastName.toLowerCase()}`;
+		
+		// CORRECCIÓN: Verificación de duplicados mejorada
+		const isDuplicate = storedUsers.some((user, idx) => {
+			const name = `${user.name.toLowerCase()} ${user.lastName.toLowerCase()}`;
+			// Si estamos editando, excluir el usuario actual de la verificación
+			return name === fullName && !(isEditing && idx === editingIndex);
+		});
+
+		if (isDuplicate) {
+			message.textContent = "⚠️ Ese usuario ya existe.";
+			// Limpiar todas las clases primero
+			message.classList.remove("message--hidden", "message--show", "message--hide");
+			// Mostrar el mensaje
+			message.classList.add("message--show");
+
+			setTimeout(() => {
+				message.classList.remove("message--show");
+				message.classList.add("message--hide");
+
+				setTimeout(() => {
+					message.classList.remove("message--hide");
+					message.classList.add("message--hidden");
+				}, 300);
+			}, 2000);
+
+			return; // Detener envío
+		}
+
 		if (isEditing && editingIndex !== null) {
-			// Modo edición
-			storedUsers[editingIndex] = { name: firstName, lastName: lastName };
-			localStorage.setItem("users", JSON.stringify(storedUsers));
+			// Verificar si realmente hubo cambios
+			const currentUser = storedUsers[editingIndex];
+			const hasChanges = currentUser.name !== firstName || currentUser.lastName !== lastName;
+			
+			if (hasChanges) {
+				storedUsers[editingIndex] = { name: firstName, lastName: lastName };
+				localStorage.setItem("users", JSON.stringify(storedUsers));
+				message.textContent = "Usuario editado correctamente ✅";
+			} else {
+				// No hubo cambios, mostrar mensaje informativo
+				message.textContent = "ℹ️ No se han realizado cambios";
+			}
 
 			isEditing = false;
 			editingIndex = null;
 			submitBtn.textContent = "Crear usuario";
 			formTitle.textContent = "Crear nuevo usuario";
-
-			message.textContent = "Usuario editado correctamente ✅";
 		} else {
-			// Modo creación
 			const newUser = { name: firstName, lastName: lastName };
 			storedUsers.push(newUser);
 			localStorage.setItem("users", JSON.stringify(storedUsers));
@@ -63,34 +111,41 @@ document.addEventListener("DOMContentLoaded", () => {
 		formSection.classList.remove("form--show");
 		setTimeout(() => {
 			formSection.classList.add("form--hidden");
-		}, 300); // debe coincidir con la duración de la transición CSS
+		}, 300);
 
-
-		// Mostrar mensaje con animación
-		message.classList.remove("message--hidden");
-		message.classList.add("message--show");
-
-		// Esperar 2s y hacer fade-out
-		setTimeout(() => {
-			message.classList.remove("message--show");
-			message.classList.add("message--hide");
+		// Solo mostrar mensaje si hay contenido
+		if (message.textContent && message.textContent.trim() !== "") {
+			// Limpiar todas las clases primero
+			message.classList.remove("message--hidden", "message--show", "message--hide");
+			// Mostrar el mensaje
+			message.classList.add("message--show");
 
 			setTimeout(() => {
-				message.classList.remove("message--hide");
-				message.classList.add("message--hidden");
-				usersSection.classList.remove("users--hidden");
+				message.classList.remove("message--show");
+				message.classList.add("message--hide");
 
+				setTimeout(() => {
+					message.classList.remove("message--hide");
+					message.classList.add("message--hidden");
+					usersSection.classList.remove("users--hidden");
+
+					renderUsers();
+				}, 300);
+			}, 2000);
+		} else {
+			// Si no hay mensaje, mostrar directamente la sección de usuarios
+			setTimeout(() => {
+				usersSection.classList.remove("users--hidden");
 				renderUsers();
 			}, 300);
-		}, 2000);
+		}
 	});
 
-	// === Confirmación visual para eliminar usuarios ===
+	// Confirmación visual para eliminar usuarios
 	const confirmDialog = document.getElementById("confirmDialog");
 	const confirmYes = document.getElementById("confirmYes");
 	const confirmNo = document.getElementById("confirmNo");
 
-	// Confirmar eliminación
 	confirmYes.addEventListener("click", () => {
 		const users = JSON.parse(localStorage.getItem("users")) || [];
 		if (pendingDeleteIndex !== null) {
@@ -102,7 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		pendingDeleteIndex = null;
 	});
 
-	// Cancelar eliminación
 	confirmNo.addEventListener("click", () => {
 		confirmDialog.classList.add("hidden");
 		pendingDeleteIndex = null;
@@ -132,7 +186,6 @@ function renderUsers() {
 
 	const users = JSON.parse(localStorage.getItem("users")) || [];
 
-	// Ajustar centrado si solo hay el botón
 	if (users.length === 0) {
 		container.style.display = "flex";
 		container.style.justifyContent = "center";
@@ -172,15 +225,12 @@ function renderUsers() {
 			isEditing = true;
 			editingIndex = index;
 
-			// Rellenar campos del formulario
 			document.getElementById("form__name").value = user.name;
 			document.getElementById("form__lastName").value = user.lastName;
 
-			// Cambiar título y botón
 			submitBtn.textContent = "Guardar cambios";
 			formTitle.textContent = "Editar usuario";
 
-			// Mostrar formulario con animación
 			usersSection.classList.add("users--hidden");
 			formSection.classList.remove("form--hidden");
 			setTimeout(() => {
@@ -197,7 +247,6 @@ function renderUsers() {
 		container.appendChild(card);
 	});
 
-	// Si hay menos de 6 usuarios, mostrar botón de añadir
 	if (users.length < 6) {
 		container.appendChild(staticButton);
 		staticButton.style.display = "flex";
