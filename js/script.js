@@ -10,31 +10,69 @@ document.addEventListener("DOMContentLoaded", () => {
 	const usersSection = document.getElementById("users");
 	const formSection = document.getElementById("form");
 	const form = document.getElementById("form__content");
-	const message = document.getElementById("message");
+	const formMessage = document.getElementById("formMessage");
 	const formBackBtn = document.querySelector(".form__back-btn");
 
-	// Inicializar referencias a elementos después de que el DOM esté listo
 	submitBtn = document.querySelector(".form__submit");
 	formTitle = document.querySelector(".form__title");
 
-	// Volver a inicio
-	formBackBtn.addEventListener("click", () => {
+	// Función para cerrar el formulario
+	function closeForm(animated = true) {
 		formSection.classList.remove("form--show");
-		setTimeout(() => {
+
+		if (animated) {
+			setTimeout(() => {
+				formSection.classList.add("form--hidden");
+				usersSection.classList.remove("users--hidden");
+				form.reset();
+				submitBtn.textContent = "Crear usuario";
+				formTitle.textContent = "Crear nuevo usuario";
+				formMessage.classList.add("form__message--hidden");
+				formMessage.textContent = "";
+			}, 2000); // coincide con la transición
+		} else {
 			formSection.classList.add("form--hidden");
 			usersSection.classList.remove("users--hidden");
 			form.reset();
 			submitBtn.textContent = "Crear usuario";
 			formTitle.textContent = "Crear nuevo usuario";
-		}, 300);
+			formMessage.classList.add("form__message--hidden");
+			formMessage.textContent = "";
+		}
+	}
+
+
+	function showBigMessage(text) {
+		const message = document.getElementById("message");
+		message.textContent = text;
+		message.classList.remove("message--hidden");
+		message.classList.add("message--show");
+
+		setTimeout(() => {
+			message.classList.remove("message--show");
+			message.classList.add("message--hide");
+
+			setTimeout(() => {
+				message.classList.remove("message--hide");
+				message.classList.add("message--hidden");
+				message.textContent = "";
+			}, 300); // Duración del fade-out
+		}, 2000); // Duración visible
+	}
+
+
+	// Volver a inicio
+	formBackBtn.addEventListener("click", () => {
+		closeForm(false);
 	});
 
-	// Mostrar formulario
 	addUserBtn.addEventListener("click", () => {
 		isEditing = false;
 		editingIndex = null;
 		submitBtn.textContent = "Crear usuario";
 		formTitle.textContent = "Crear nuevo usuario";
+		formMessage.classList.add("form__message--hidden");
+		formMessage.textContent = "";
 
 		form.reset();
 		usersSection.classList.add("users--hidden");
@@ -44,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		}, 10);
 	});
 
-	// Capturar datos al enviar el formulario
 	form.addEventListener("submit", (e) => {
 		e.preventDefault();
 
@@ -53,92 +90,57 @@ document.addEventListener("DOMContentLoaded", () => {
 		let storedUsers = JSON.parse(localStorage.getItem("users")) || [];
 
 		const fullName = `${firstName.toLowerCase()} ${lastName.toLowerCase()}`;
-		
-		// CORRECCIÓN: Verificación de duplicados mejorada
 		const isDuplicate = storedUsers.some((user, idx) => {
 			const name = `${user.name.toLowerCase()} ${user.lastName.toLowerCase()}`;
-			// Si estamos editando, excluir el usuario actual de la verificación
-			return name === fullName && !(isEditing && idx === editingIndex);
+			return name === fullName && idx !== editingIndex;
 		});
 
 		if (isDuplicate) {
-			message.textContent = "⚠️ Ese usuario ya existe.";
-			// Limpiar todas las clases primero
-			message.classList.remove("message--hidden", "message--show", "message--hide");
-			// Mostrar el mensaje
-			message.classList.add("message--show");
-
-			setTimeout(() => {
-				message.classList.remove("message--show");
-				message.classList.add("message--hide");
-
-				setTimeout(() => {
-					message.classList.remove("message--hide");
-					message.classList.add("message--hidden");
-				}, 300);
-			}, 2000);
-
-			return; // Detener envío
+			formMessage.textContent = "⚠️ Ese usuario ya existe.";
+			formMessage.className = "form__message form__message--error";
+			formMessage.classList.remove("form__message--hidden");
+			return;
 		}
 
 		if (isEditing && editingIndex !== null) {
-			// Verificar si realmente hubo cambios
 			const currentUser = storedUsers[editingIndex];
 			const hasChanges = currentUser.name !== firstName || currentUser.lastName !== lastName;
-			
-			if (hasChanges) {
-				storedUsers[editingIndex] = { name: firstName, lastName: lastName };
-				localStorage.setItem("users", JSON.stringify(storedUsers));
-				message.textContent = "Usuario editado correctamente ✅";
-			} else {
-				// No hubo cambios, mostrar mensaje informativo
-				message.textContent = "ℹ️ No se han realizado cambios";
+
+			if (!hasChanges) {
+				formMessage.textContent = "ℹ️ No se han realizado cambios.";
+				formMessage.className = "form__message form__message--info";
+				formMessage.classList.remove("form__message--hidden");
+				return;
 			}
+
+			storedUsers[editingIndex] = { name: firstName, lastName: lastName };
+			localStorage.setItem("users", JSON.stringify(storedUsers));
 
 			isEditing = false;
 			editingIndex = null;
 			submitBtn.textContent = "Crear usuario";
 			formTitle.textContent = "Crear nuevo usuario";
+
+			closeForm();
+			showBigMessage("✅ Usuario editado correctamente");
+
 		} else {
 			const newUser = { name: firstName, lastName: lastName };
 			storedUsers.push(newUser);
 			localStorage.setItem("users", JSON.stringify(storedUsers));
 
-			message.textContent = "Usuario añadido correctamente ✅";
+			closeForm();
+			showBigMessage("✅ Usuario registrado correctamente");
+
 		}
 
+		formMessage.classList.remove("form__message--hidden");
 		form.reset();
-		formSection.classList.remove("form--show");
+
+		// Esperar 2 segundos antes de cerrar el formulario para que se vea el mensaje de éxito
 		setTimeout(() => {
-			formSection.classList.add("form--hidden");
-		}, 300);
-
-		// Solo mostrar mensaje si hay contenido
-		if (message.textContent && message.textContent.trim() !== "") {
-			// Limpiar todas las clases primero
-			message.classList.remove("message--hidden", "message--show", "message--hide");
-			// Mostrar el mensaje
-			message.classList.add("message--show");
-
-			setTimeout(() => {
-				message.classList.remove("message--show");
-				message.classList.add("message--hide");
-
-				setTimeout(() => {
-					message.classList.remove("message--hide");
-					message.classList.add("message--hidden");
-					usersSection.classList.remove("users--hidden");
-
-					renderUsers();
-				}, 300);
-			}, 2000);
-		} else {
-			// Si no hay mensaje, mostrar directamente la sección de usuarios
-			setTimeout(() => {
-				usersSection.classList.remove("users--hidden");
-				renderUsers();
-			}, 300);
-		}
+			closeForm();
+		}, 1500);
 	});
 
 	// Confirmación visual para eliminar usuarios
@@ -164,6 +166,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	renderUsers();
 });
+
+// getColorFromName + renderUsers siguen igual (no es necesario modificarlos)
 
 function getColorFromName(name, lastName) {
 	const colors = ["#FFD369", "#FF9F68", "#87CEEB", "#A3E4D7", "#F5B7B1", "#F7DC6F", "#B9FBC0"];
