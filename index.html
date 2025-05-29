@@ -13,7 +13,8 @@
 	<header class="header">
 		<div class="header__info">
 			<div class="header__title">
-				<svg class="header__icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="44" height="44">
+				<svg class="header__icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="44"
+					height="44">
 					<path fill="currentColor" d="M13 10V3L4 14h7v7l9-11h-7z" />
 				</svg>
 				<h1>RindeMás</h1>
@@ -28,14 +29,18 @@
 				<h3 class="users__info--subtitle">Selecciona tu perfil para comenzar</h3>
 			</div>
 
-			<div class="users__add">
+			<!-- Tarjetas de usuarios creadas dinámicamente -->
+			<div class="users__cards" id="users-cards">
 				<button id="add-user-btn" class="user_card add_user">
 					<svg class="users__icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+						<path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round"
+							stroke-linejoin="round" />
 					</svg>
 					<span class="user_name">Añadir Usuario</span>
 				</button>
 			</div>
+
+
 		</section>
 
 		<section class="form form--hidden" id="form">
