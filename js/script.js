@@ -1,3 +1,10 @@
+// Variables globales
+let isEditing = false;
+let editingIndex = null;
+let submitBtn;
+let formTitle;
+let pendingDeleteIndex = null;
+
 document.addEventListener("DOMContentLoaded", () => {
 	const addUserBtn = document.getElementById("add-user-btn");
 	const usersSection = document.getElementById("users");
@@ -5,10 +12,23 @@ document.addEventListener("DOMContentLoaded", () => {
 	const form = document.getElementById("form__content");
 	const message = document.getElementById("message");
 
+	// Inicializar referencias a elementos después de que el DOM esté listo
+	submitBtn = document.querySelector(".form__submit");
+	formTitle = document.querySelector(".form__title");
+
 	// Mostrar formulario
 	addUserBtn.addEventListener("click", () => {
+		isEditing = false;
+		editingIndex = null;
+		submitBtn.textContent = "Crear usuario";
+		formTitle.textContent = "Crear nuevo usuario";
+
+		form.reset();
 		usersSection.classList.add("users--hidden");
 		formSection.classList.remove("form--hidden");
+		setTimeout(() => {
+			formSection.classList.add("form--show");
+		}, 10);
 	});
 
 	// Capturar datos al enviar el formulario
@@ -17,15 +37,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		const firstName = document.getElementById("form__name").value.trim();
 		const lastName = document.getElementById("form__lastName").value.trim();
+		let storedUsers = JSON.parse(localStorage.getItem("users")) || [];
 
-		const newUser = { name: firstName, lastName: lastName };
+		if (isEditing && editingIndex !== null) {
+			// Modo edición
+			storedUsers[editingIndex] = { name: firstName, lastName: lastName };
+			localStorage.setItem("users", JSON.stringify(storedUsers));
 
-		const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-		storedUsers.push(newUser);
-		localStorage.setItem("users", JSON.stringify(storedUsers));
+			isEditing = false;
+			editingIndex = null;
+			submitBtn.textContent = "Crear usuario";
+			formTitle.textContent = "Crear nuevo usuario";
+
+			message.textContent = "Usuario editado correctamente ✅";
+		} else {
+			// Modo creación
+			const newUser = { name: firstName, lastName: lastName };
+			storedUsers.push(newUser);
+			localStorage.setItem("users", JSON.stringify(storedUsers));
+
+			message.textContent = "Usuario añadido correctamente ✅";
+		}
 
 		form.reset();
-		formSection.classList.add("form--hidden");
+		formSection.classList.remove("form--show");
+		setTimeout(() => {
+			formSection.classList.add("form--hidden");
+		}, 300); // debe coincidir con la duración de la transición CSS
+
 
 		// Mostrar mensaje con animación
 		message.classList.remove("message--hidden");
@@ -36,15 +75,37 @@ document.addEventListener("DOMContentLoaded", () => {
 			message.classList.remove("message--show");
 			message.classList.add("message--hide");
 
-			// Después del fade-out, ocultar el mensaje completamente
 			setTimeout(() => {
 				message.classList.remove("message--hide");
 				message.classList.add("message--hidden");
 				usersSection.classList.remove("users--hidden");
 
 				renderUsers();
-			}, 300); // duración de la animación de salida
+			}, 300);
 		}, 2000);
+	});
+
+	// === Confirmación visual para eliminar usuarios ===
+	const confirmDialog = document.getElementById("confirmDialog");
+	const confirmYes = document.getElementById("confirmYes");
+	const confirmNo = document.getElementById("confirmNo");
+
+	// Confirmar eliminación
+	confirmYes.addEventListener("click", () => {
+		const users = JSON.parse(localStorage.getItem("users")) || [];
+		if (pendingDeleteIndex !== null) {
+			users.splice(pendingDeleteIndex, 1);
+			localStorage.setItem("users", JSON.stringify(users));
+			renderUsers();
+		}
+		confirmDialog.classList.add("hidden");
+		pendingDeleteIndex = null;
+	});
+
+	// Cancelar eliminación
+	confirmNo.addEventListener("click", () => {
+		confirmDialog.classList.add("hidden");
+		pendingDeleteIndex = null;
 	});
 
 	renderUsers();
@@ -64,6 +125,8 @@ function getColorFromName(name, lastName) {
 function renderUsers() {
 	const container = document.getElementById("users-cards");
 	const staticButton = document.getElementById("add-user-btn");
+	const usersSection = document.getElementById("users");
+	const formSection = document.getElementById("form");
 
 	container.innerHTML = "";
 
@@ -106,24 +169,29 @@ function renderUsers() {
 			'</div>';
 
 		card.querySelector(".edit-user-btn").addEventListener("click", () => {
-			const newName = prompt("Editar nombre del usuario:", `${user.name} ${user.lastName}`);
-			if (newName) {
-				const [newFirstName, ...rest] = newName.trim().split(" ");
-				const newLastName = rest.join(" ") || "";
-				users[index].name = newFirstName;
-				users[index].lastName = newLastName;
-				localStorage.setItem("users", JSON.stringify(users));
-				renderUsers();
-			}
+			isEditing = true;
+			editingIndex = index;
+
+			// Rellenar campos del formulario
+			document.getElementById("form__name").value = user.name;
+			document.getElementById("form__lastName").value = user.lastName;
+
+			// Cambiar título y botón
+			submitBtn.textContent = "Guardar cambios";
+			formTitle.textContent = "Editar usuario";
+
+			// Mostrar formulario con animación
+			usersSection.classList.add("users--hidden");
+			formSection.classList.remove("form--hidden");
+			setTimeout(() => {
+				formSection.classList.add("form--show");
+			}, 10);
 		});
 
 		card.querySelector(".delete-user-btn").addEventListener("click", () => {
-			const confirmDelete = confirm(`¿Eliminar a ${user.name} ${user.lastName}?`);
-			if (confirmDelete) {
-				users.splice(index, 1);
-				localStorage.setItem("users", JSON.stringify(users));
-				renderUsers();
-			}
+			const confirmDialog = document.getElementById("confirmDialog");
+			pendingDeleteIndex = index;
+			confirmDialog.classList.remove("hidden");
 		});
 
 		container.appendChild(card);
