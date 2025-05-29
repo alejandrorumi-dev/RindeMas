@@ -312,6 +312,29 @@ main {
   background-color: var(--bg-color);
 }
 
+.form__back {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.form__back-btn {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.form__back-btn:hover {
+  color: var(--bg-color);
+}
+
+
 /* ============================
 	ESTILOS PARA EL MENSAJE DE
   AGREGAR UN NUEVO USUARIO
