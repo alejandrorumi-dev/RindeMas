@@ -1,3 +1,10 @@
+<!--
+  ============================
+  RINDEMÁS - INICIO
+  ============================
+  Estructura inicial con HTML semántico, organización por BEM y comentarios clave.
+  Diseñado como base reutilizable para otros proyectos web.
+-->
 <!DOCTYPE html>
 <html lang="es">
 
@@ -29,22 +36,20 @@
 				<h3 class="users__info--subtitle">Selecciona tu perfil para comenzar</h3>
 			</div>
 
-			<!-- Tarjetas de usuarios creadas dinámicamente -->
 			<div class="users__cards" id="users-cards">
-				<button id="add-user-btn" class="user_card add_user">
-					<svg class="users__icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round"
-							stroke-linejoin="round" />
-					</svg>
-					<span class="user_name">Añadir Usuario</span>
-				</button>
+
 			</div>
-
-
+			<button id="add-user-btn" class="user_card add_user">
+				<svg class="users__icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round"
+						stroke-linejoin="round" />
+				</svg>
+				<span class="user_name">Añadir Usuario</span>
+			</button>
 		</section>
 
 		<section class="form form--hidden" id="form">
-			<!-- Botón volver arriba a la izquierda -->
+			<!-- Botón volver a inicio -->
 			<div class="form__back" id="formBack">
 				<button type="button" class="form__back-btn">&larr; Volver a inicio</button>
 			</div>
@@ -58,15 +63,15 @@
 				<label for="form__lastName" class="form__label">Apellido:</label>
 				<input type="text" id="form__lastName" name="apellido" class="form__input" required>
 
+				<!-- Mensaje de error o informativo -->
 				<p id="formMessage" class="form__message form__message--hidden"></p>
 
 				<button type="submit" class="form__submit">Crear usuario</button>
 			</form>
-
 		</section>
-
 	</main>
 
+	<!-- Mensaje flotante de confirmación (exito) -->
 	<div class="message message--hidden" id="message">Usuario añadido correctamente ✅</div>
 
 	<footer class="footer">
@@ -75,6 +80,7 @@
 		</div>
 	</footer>
 
+	<!-- Confirmación de eliminación de usuario -->
 	<div id="confirmDialog" class="confirm-dialog hidden">
 		<div class="confirm-content">
 			<p id="confirmMessage">¿Eliminar este usuario?</p>
@@ -84,7 +90,6 @@
 			</div>
 		</div>
 	</div>
-
 
 	<script src="js/script.js"></script>
 </body>
