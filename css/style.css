@@ -125,8 +125,9 @@ main {
 /*Estilos para las cards de los usuarios*/
 
 .user_card {
-  width: 330px;
-  height: 280px;
+  all: unset;
+  width: 280px;
+  height: 230px;
   background-color: #fff;
   border-radius: 12px;
   border: none;
@@ -142,13 +143,23 @@ main {
   text-align: center;
 }
 
+.users__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 3rem;
+  justify-items: center ;
+  width: 100%;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
 /*Estilos para el icono de las cards*/
 
 .users__icon-svg {
   width: 48px;
   height: 48px;
   margin-bottom: 1rem;
-  color: #FFD369;
   background-color: var(--card--bg);
   padding: 2rem;
   border-radius: 50%;
