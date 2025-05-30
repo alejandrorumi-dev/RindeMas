@@ -208,17 +208,17 @@ function renderUsers() {
 
 	// Mostrar u ocultar el botón según el número de usuarios
 	if (users.length < 6) {
-	staticButton.style.display = "flex";
-	// Pequeña pausa para que se aplique la clase con transición
-	requestAnimationFrame(() => {
-		staticButton.classList.add("visible");
-	});
-} else {
-	staticButton.classList.remove("visible");
-	setTimeout(() => {
-		staticButton.style.display = "none";
-	}, 300); // Espera a que termine la animación
-}
+		staticButton.style.display = "flex";
+		// Pequeña pausa para que se aplique la clase con transición
+		requestAnimationFrame(() => {
+			staticButton.classList.add("visible");
+		});
+	} else {
+		staticButton.classList.remove("visible");
+		setTimeout(() => {
+			staticButton.style.display = "none";
+		}, 300); // Espera a que termine la animación
+	}
 
 	// Insertar tarjetas de usuario
 	users.forEach((user, index) => {
@@ -227,12 +227,13 @@ function renderUsers() {
 		const color = getColorFromName(user.name, user.lastName);
 
 		card.innerHTML = `
-			<div class="users__icon-svg" style="background-color:${color}">
-				<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
-					<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
-				</svg>
-			</div>
-			<span class="user_name">${user.name} ${user.lastName}</span>
+			<input type="checkbox" class="select-user-checkbox" data-index="${index}">
+	<div class="users__icon-svg" style="background-color:${color}">
+		<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
+			<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
+		</svg>
+	</div>
+	<span class="user_name">${user.name} ${user.lastName}</span>
 			<div class="user_actions">
 				<button class="edit-user-btn" title="Editar">
 					<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
@@ -266,4 +267,36 @@ function renderUsers() {
 
 		container.insertBefore(card, staticButton); // Insertar justo antes del botón
 	});
+
+	// Mostrar u ocultar bulk-actions
+	const bulkActions = document.getElementById("bulk-actions");
+	bulkActions.style.display = users.length > 0 ? "flex" : "none";
+
+	// Eliminar seleccionados
+	document.getElementById("delete-selected-btn").addEventListener("click", () => {
+		const selected = Array.from(document.querySelectorAll(".select-user-checkbox:checked"))
+			.map(cb => parseInt(cb.dataset.index));
+
+		if (selected.length === 0) return;
+
+		let updatedUsers = users.filter((_, idx) => !selected.includes(idx));
+		localStorage.setItem("users", JSON.stringify(updatedUsers));
+		renderUsers();
+	});
+
+	// Seleccionar todos
+	document.getElementById("select-all-btn").addEventListener("click", () => {
+		document.querySelectorAll(".select-user-checkbox").forEach(cb => cb.checked = true);
+		document.getElementById("delete-selected-btn").classList.remove("hidden");
+	});
+
+	// Mostrar u ocultar el botón de eliminar múltiples en tiempo real
+	document.querySelectorAll(".select-user-checkbox").forEach(cb => {
+		cb.addEventListener("change", () => {
+			const anySelected = Array.from(document.querySelectorAll(".select-user-checkbox"))
+				.some(cb => cb.checked);
+			document.getElementById("delete-selected-btn").classList.toggle("hidden", !anySelected);
+		});
+	});
+
 }
