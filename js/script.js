@@ -187,67 +187,77 @@ function renderUsers() {
 	const container = document.getElementById("users-cards");
 	const staticButton = document.getElementById("add-user-btn");
 
-	// Limpiar todas las tarjetas excepto el botón "Añadir Usuario"
+	// Limpiar tarjetas excepto el botón "Añadir Usuario"
 	const userCards = container.querySelectorAll('.user_card');
 	userCards.forEach(card => {
-		if (card !== staticButton) {
-			card.remove();
-		}
+		if (card !== staticButton) card.remove();
 	});
 
 	const users = JSON.parse(localStorage.getItem("users")) || [];
 
-	// Configurar el layout del contenedor
+	// Configurar layout
 	container.style.display = users.length === 0 ? "flex" : "grid";
 	container.style.justifyContent = users.length === 0 ? "center" : "";
 
-	// Asegurarse de que el botón está en el contenedor
+	// Añadir el botón "Añadir Usuario" si no está
 	if (!container.contains(staticButton)) {
 		container.appendChild(staticButton);
 	}
 
-	// Mostrar u ocultar el botón según el número de usuarios
+	// Mostrar u ocultar el botón "Añadir Usuario"
 	if (users.length < 6) {
 		staticButton.style.display = "flex";
-		// Pequeña pausa para que se aplique la clase con transición
-		requestAnimationFrame(() => {
-			staticButton.classList.add("visible");
-		});
+		requestAnimationFrame(() => staticButton.classList.add("visible"));
 	} else {
 		staticButton.classList.remove("visible");
-		setTimeout(() => {
-			staticButton.style.display = "none";
-		}, 300); // Espera a que termine la animación
+		setTimeout(() => staticButton.style.display = "none", 300);
 	}
 
-	// Insertar tarjetas de usuario
+	// Ocultar barra de acciones múltiples al inicio
+	const bulkActions = document.getElementById("bulk-actions");
+	bulkActions.classList.add("hidden");
+	document.getElementById("delete-selected-btn").classList.add("hidden");
+
+	// Renderizar usuarios
 	users.forEach((user, index) => {
 		const card = document.createElement("div");
 		card.classList.add("user_card");
 		const color = getColorFromName(user.name, user.lastName);
 
 		card.innerHTML = `
-			<input type="checkbox" class="select-user-checkbox" data-index="${index}">
-	<div class="users__icon-svg" style="background-color:${color}">
-		<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
-			<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
-		</svg>
-	</div>
-	<span class="user_name">${user.name} ${user.lastName}</span>
-			<div class="user_actions">
-				<button class="edit-user-btn" title="Editar">
-					<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M4 21h4l11-11-4-4L4 17v4z"/>
-					</svg>
-				</button>
-				<button class="delete-user-btn" title="Eliminar">
-					<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M3 6h18M9 6v12M15 6v12M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"/>
-					</svg>
-				</button>
+			<input type="checkbox" class="select-user-checkbox hidden" data-index="${index}">
+			<div class="users__icon-svg" style="background-color:${color}">
+				<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
+					<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
+				</svg>
+			</div>
+			<span class="user_name">${user.name} ${user.lastName}</span>
+			<div class="user_dropdown">
+				<button class="dropdown-toggle" title="Acciones">⋮</button>
+				<div class="dropdown-menu hidden">
+					<button class="edit-user-btn">Editar</button>
+					<button class="delete-user-btn">Eliminar</button>
+					<button class="toggle-select-btn">Seleccionar</button>
+				</div>
 			</div>
 		`;
 
+		const toggleBtn = card.querySelector(".dropdown-toggle");
+		const menu = card.querySelector(".dropdown-menu");
+
+		// Mostrar menú desplegable
+		toggleBtn.addEventListener("click", (e) => {
+			e.stopPropagation();
+			document.querySelectorAll(".dropdown-menu").forEach(m => m.classList.add("hidden"));
+			menu.classList.remove("hidden");
+		});
+
+		// Evitar que el clic dentro del menú lo cierre
+		menu.addEventListener("click", (e) => {
+			e.stopPropagation();
+		});
+
+		// Editar
 		card.querySelector(".edit-user-btn").addEventListener("click", () => {
 			isEditing = true;
 			editingIndex = index;
@@ -260,43 +270,53 @@ function renderUsers() {
 			setTimeout(() => document.getElementById("form").classList.add("form--show"), 10);
 		});
 
+		// Eliminar
 		card.querySelector(".delete-user-btn").addEventListener("click", () => {
 			pendingDeleteIndex = index;
 			document.getElementById("confirmDialog").classList.remove("hidden");
 		});
 
-		container.insertBefore(card, staticButton); // Insertar justo antes del botón
-	});
+		// Seleccionar (mostrar checkbox)
+		card.querySelector(".toggle-select-btn").addEventListener("click", () => {
+			const checkbox = card.querySelector(".select-user-checkbox");
+			checkbox.classList.remove("hidden");
+			checkbox.checked = true;
+			updateBulkActionsVisibility();
+		});
 
-	// Mostrar u ocultar bulk-actions
-	const bulkActions = document.getElementById("bulk-actions");
-	bulkActions.style.display = users.length > 0 ? "flex" : "none";
+		container.insertBefore(card, staticButton);
+	});
 
 	// Eliminar seleccionados
 	document.getElementById("delete-selected-btn").addEventListener("click", () => {
 		const selected = Array.from(document.querySelectorAll(".select-user-checkbox:checked"))
 			.map(cb => parseInt(cb.dataset.index));
-
 		if (selected.length === 0) return;
 
-		let updatedUsers = users.filter((_, idx) => !selected.includes(idx));
+		const updatedUsers = users.filter((_, idx) => !selected.includes(idx));
 		localStorage.setItem("users", JSON.stringify(updatedUsers));
 		renderUsers();
 	});
 
 	// Seleccionar todos
 	document.getElementById("select-all-btn").addEventListener("click", () => {
-		document.querySelectorAll(".select-user-checkbox").forEach(cb => cb.checked = true);
-		document.getElementById("delete-selected-btn").classList.remove("hidden");
-	});
-
-	// Mostrar u ocultar el botón de eliminar múltiples en tiempo real
-	document.querySelectorAll(".select-user-checkbox").forEach(cb => {
-		cb.addEventListener("change", () => {
-			const anySelected = Array.from(document.querySelectorAll(".select-user-checkbox"))
-				.some(cb => cb.checked);
-			document.getElementById("delete-selected-btn").classList.toggle("hidden", !anySelected);
+		document.querySelectorAll(".select-user-checkbox").forEach(cb => {
+			cb.classList.remove("hidden");
+			cb.checked = true;
 		});
+		updateBulkActionsVisibility();
 	});
 
+	// Checkboxes individuales
+	document.querySelectorAll(".select-user-checkbox").forEach(cb => {
+		cb.addEventListener("change", updateBulkActionsVisibility);
+	});
+
+	// Función auxiliar para mostrar/ocultar barra de acciones múltiples
+	function updateBulkActionsVisibility() {
+		const anySelected = Array.from(document.querySelectorAll(".select-user-checkbox"))
+			.some(cb => cb.checked);
+		document.getElementById("bulk-actions").classList.toggle("hidden", !anySelected);
+		document.getElementById("delete-selected-btn").classList.toggle("hidden", !anySelected);
+	}
 }
