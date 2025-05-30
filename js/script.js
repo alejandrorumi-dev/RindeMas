@@ -103,6 +103,14 @@ document.addEventListener("DOMContentLoaded", () => {
 			return;
 		}
 
+		// Validar límite máximo de usuarios (solo para nuevos usuarios, no para edición)
+		if (!isEditing && storedUsers.length >= 6) {
+			formMessage.textContent = "⚠️ Máximo 6 usuarios permitidos.";
+			formMessage.className = "form__message form__message--error";
+			formMessage.classList.remove("form__message--hidden");
+			return;
+		}
+
 		if (isEditing && editingIndex !== null) {
 			const currentUser = storedUsers[editingIndex];
 			const hasChanges = currentUser.name !== firstName || currentUser.lastName !== lastName;
@@ -155,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		}, 50);
 	});
 
-
 	confirmNo.addEventListener("click", () => {
 		confirmDialog.classList.add("hidden");
 		pendingDeleteIndex = null;
@@ -180,20 +187,36 @@ function renderUsers() {
 	const container = document.getElementById("users-cards");
 	const staticButton = document.getElementById("add-user-btn");
 
-	container.innerHTML = ""; // vaciar las cards
+	// Limpiar todas las tarjetas excepto el botón "Añadir Usuario"
+	const userCards = container.querySelectorAll('.user_card');
+	userCards.forEach(card => {
+		if (card !== staticButton) {
+			card.remove();
+		}
+	});
 
 	const users = JSON.parse(localStorage.getItem("users")) || [];
 
+	// Configurar el layout del contenedor
 	container.style.display = users.length === 0 ? "flex" : "grid";
 	container.style.justifyContent = users.length === 0 ? "center" : "";
 
+	// Asegurarse de que el botón está en el contenedor
+	if (!container.contains(staticButton)) {
+		container.appendChild(staticButton);
+	}
+
+	// Mostrar u ocultar el botón según el número de usuarios
+	staticButton.style.display = users.length < 6 ? "flex" : "none";
+
+	// Insertar tarjetas de usuario
 	users.forEach((user, index) => {
 		const card = document.createElement("div");
 		card.classList.add("user_card");
 		const color = getColorFromName(user.name, user.lastName);
 
-		card.innerHTML =
-			`<div class="users__icon-svg" style="background-color:${color}">
+		card.innerHTML = `
+			<div class="users__icon-svg" style="background-color:${color}">
 				<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
 					<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
 				</svg>
@@ -210,7 +233,8 @@ function renderUsers() {
 						<path d="M3 6h18M9 6v12M15 6v12M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"/>
 					</svg>
 				</button>
-			</div>`;
+			</div>
+		`;
 
 		card.querySelector(".edit-user-btn").addEventListener("click", () => {
 			isEditing = true;
@@ -229,18 +253,6 @@ function renderUsers() {
 			document.getElementById("confirmDialog").classList.remove("hidden");
 		});
 
-		container.appendChild(card);
+		container.insertBefore(card, staticButton); // Insertar justo antes del botón
 	});
-
-	// Mostrar u ocultar el botón sin eliminarlo del DOM
-	if (users.length < 6) {
-		if (!container.contains(staticButton)) {
-			container.appendChild(staticButton);
-		}
-		staticButton.style.display = "flex";
-	} else {
-		if (container.contains(staticButton)) {
-			container.removeChild(staticButton);
-		}
-	}
 }
