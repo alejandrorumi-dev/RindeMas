@@ -6,9 +6,9 @@
 
 - ✅ Formulario de creación de usuarios en proceso
 - ✅ Base de datos local en planificación
-+ ✅ Formulario de creación y edición de usuarios finalizado
-+ ✅ Almacenamiento local con localStorage
-+ ✅ Funcionalidad de eliminar usuario lista
+- ✅ Formulario de creación y edición de usuarios finalizado
+- ✅ Almacenamiento local con localStorage
+- ✅ Funcionalidad de eliminar usuario lista
 + 🧪 En desarrollo: selección múltiple y eliminación masiva
 + 🧪 Responsive design en progreso
 
