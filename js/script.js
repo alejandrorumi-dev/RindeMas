@@ -207,7 +207,18 @@ function renderUsers() {
 	}
 
 	// Mostrar u ocultar el botón según el número de usuarios
-	staticButton.style.display = users.length < 6 ? "flex" : "none";
+	if (users.length < 6) {
+	staticButton.style.display = "flex";
+	// Pequeña pausa para que se aplique la clase con transición
+	requestAnimationFrame(() => {
+		staticButton.classList.add("visible");
+	});
+} else {
+	staticButton.classList.remove("visible");
+	setTimeout(() => {
+		staticButton.style.display = "none";
+	}, 300); // Espera a que termine la animación
+}
 
 	// Insertar tarjetas de usuario
 	users.forEach((user, index) => {
