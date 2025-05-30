@@ -4,10 +4,13 @@
 
 ## 🚀 Estado del proyecto
 
-- ✅ Página de inicio completada
-- 🕐 Responsive en desarrollo
-- 🛠️ Formulario de creación de usuarios en proceso
-- 🗂️ Base de datos local en planificación
+- ✅ Formulario de creación de usuarios en proceso
+- ✅ Base de datos local en planificación
++ ✅ Formulario de creación y edición de usuarios finalizado
++ ✅ Almacenamiento local con localStorage
++ ✅ Funcionalidad de eliminar usuario lista
++ 🧪 En desarrollo: selección múltiple y eliminación masiva
++ 🧪 Responsive design en progreso
 
 ---
 
@@ -18,6 +21,12 @@
 - Botón para añadir nuevos usuarios
 - Formulario con HTML y CSS siguiendo metodología BEM
 - Preparado para integración futura con LocalStorage y backend
+- Añadir y editar perfiles de usuario
+- Eliminar usuarios de forma individual
+- Mostrar botón "Añadir usuario" solo si hay menos de 6
+- Sincronización con localStorage (persistencia de usuarios)
+- Interfaz amigable y adaptable
++ En desarrollo: eliminación múltiple por selección
 
 ---
 
