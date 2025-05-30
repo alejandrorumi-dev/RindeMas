@@ -10,7 +10,7 @@
 - ✅ Almacenamiento local con localStorage
 - ✅ Funcionalidad de eliminar usuario lista
 + 🧪 En desarrollo: selección múltiple y eliminación masiva
-+ 🧪 Responsive design en progreso
++ 🧪 En desarrollo: Responsive design en progreso
 
 ---
 
