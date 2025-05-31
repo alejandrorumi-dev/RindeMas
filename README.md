@@ -4,7 +4,7 @@
 
 ## 🚀 Estado del proyecto
 
-1. Página de inicio ✅
+1. **Página de inicio ✅**
 
 - ✅ Formulario de creación de usuarios en proceso
 - ✅ Base de datos local en planificación
@@ -15,7 +15,7 @@
 - ✅ Cuenta regresiva al eliminar usuario(s)
 + 🛠️ En desarrollo: Responsive design
 
-2. Página de usuario (En desarrollo 🛠️)
+2. **Página de usuario (En desarrollo 🛠️)**
 
 + 🛠️ En desarrollo: Responsive design
 
