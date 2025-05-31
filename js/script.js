@@ -323,10 +323,34 @@ function renderUsers() {
 			.map(cb => parseInt(cb.dataset.index));
 		if (selected.length === 0) return;
 
-		const updatedUsers = users.filter((_, idx) => !selected.includes(idx));
-		localStorage.setItem("users", JSON.stringify(updatedUsers));
-		renderUsers();
+		const countdownEl = document.getElementById("countdownMessage");
+		let seconds = 5;
+		countdownEl.textContent = `🕒 Eliminando ${selected.length} usuario(s) en ${seconds} segundos...`;
+		countdownEl.classList.remove("hidden");
+		countdownEl.classList.add("show");
+
+		const countdown = setInterval(() => {
+			seconds--;
+			countdownEl.textContent = `🕒 Eliminando ${selected.length} usuario(s) en ${seconds} segundos...`;
+
+			if (seconds === 0) {
+				clearInterval(countdown);
+				countdownEl.classList.remove("show");
+				countdownEl.classList.add("hide");
+
+				setTimeout(() => {
+					countdownEl.classList.add("hidden");
+					countdownEl.classList.remove("hide");
+					countdownEl.textContent = "";
+				}, 400);
+
+				const updatedUsers = users.filter((_, idx) => !selected.includes(idx));
+				localStorage.setItem("users", JSON.stringify(updatedUsers));
+				renderUsers();
+			}
+		}, 1000);
 	});
+
 
 	// Seleccionar todos
 	document.getElementById("select-all-btn").addEventListener("click", () => {
