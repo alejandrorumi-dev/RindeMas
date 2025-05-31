@@ -4,14 +4,20 @@
 
 ## 🚀 Estado del proyecto
 
+1. Página de inicio ✅
+
 - ✅ Formulario de creación de usuarios en proceso
 - ✅ Base de datos local en planificación
 - ✅ Formulario de creación y edición de usuarios finalizado
 - ✅ Almacenamiento local con localStorage
 - ✅ Funcionalidad de eliminar usuario lista
 - ✅ Selección múltiple y eliminación masiva
-+ ✅ En desarrollo: cuenta regresiva al eliminar usuario(s)
-+ 🛠️ En desarrollo: Responsive design en progreso
+- ✅ Cuenta regresiva al eliminar usuario(s)
++ 🛠️ En desarrollo: Responsive design
+
+2. Página de usuario (En desarrollo 🛠️)
+
++ 🛠️ En desarrollo: Responsive design
 
 ---
 
@@ -63,10 +69,10 @@ RindeMas/
 
 - HTML5
 - CSS3
+- JavaScript (implementado en la página de inicio)
+- localStorage para persistencia de usuarios
 - Google Fonts (Titillium Web, Rajdhani)
-- JavaScript (en progreso)
-- localStorage (próximamente)
-- BEM (Bloques, Elementos, Modificadores)
+- Metodología BEM (Bloques, Elementos, Modificadores)
 
 ---
 
@@ -102,6 +108,11 @@ Puedes abrir el proyecto localmente así:
 5. Abre un Pull Request en GitHub.
 
 ---
+
+## 🌐 Demo en vivo
+
+Puedes ver la página de inicio funcionando aquí:
+[https://alejandrorumi-dev.github.io/RindeMas/](https://alejandrorumi-dev.github.io/RindeMas/)
 
 ## 👨‍💻 Autor
 
