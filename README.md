@@ -10,7 +10,7 @@
 - ✅ Almacenamiento local con localStorage
 - ✅ Funcionalidad de eliminar usuario lista
 - ✅ Selección múltiple y eliminación masiva
-+ 🛠️ En desarrollo: cuenta regresiva al eliminar usuario(s)
++ ✅ En desarrollo: cuenta regresiva al eliminar usuario(s)
 + 🛠️ En desarrollo: Responsive design en progreso
 
 ---
@@ -28,6 +28,7 @@
 - Sincronización con localStorage (persistencia de usuarios)
 - Interfaz amigable y adaptable
 - Eliminación múltiple por selección
+- Cuenta regresiva al eliminar usuario(s)
 
 ---
 
