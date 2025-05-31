@@ -38,7 +38,7 @@
 
 			<div class="bulk-actions hidden" id="bulk-actions">
 				<button id="select-all-btn">Seleccionar todos</button>
-				<button id="delete-selected-btn" class="hidden">Eliminar seleccionados</button>
+				<button id="delete-selected-btn" class="hidden">Eliminar seleccionado(s)</button>
 			</div>
 
 			<div class="users__cards" id="users-cards"></div>
@@ -78,6 +78,9 @@
 	<!-- Mensaje flotante de confirmación (exito) -->
 	<div class="message message--hidden" id="message">Usuario añadido correctamente ✅</div>
 
+	<!-- Mensaje de cuenta atrás para eliminar usuarios -->
+	<div class="countdown-message hidden" id="countdownMessage"></div>
+
 	<footer class="footer">
 		<div class="footer__info">
 			<span class="footer__info--modify">&copy; 2025 RindeMás. Todos los derechos reservados.</span>
@@ -87,7 +90,7 @@
 	<!-- Confirmación de eliminación de usuario -->
 	<div id="confirmDialog" class="confirm-dialog hidden">
 		<div class="confirm-content">
-			<p id="confirmMessage">¿Eliminar este usuario?</p>
+			<p id="confirmMessage">¿ Eliminar usuario(s) ?</p>
 			<div class="confirm-buttons">
 				<button id="confirmYes">Eliminar</button>
 				<button id="confirmNo">Cancelar</button>
