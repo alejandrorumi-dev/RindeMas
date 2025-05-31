@@ -9,6 +9,7 @@ let editingIndex = null;
 let submitBtn;
 let formTitle;
 let pendingDeleteIndex = null;
+let pendingDeleteIndices = []; // Para eliminación múltiple
 
 // Al cargar el DOM
 document.addEventListener("DOMContentLoaded", () => {
@@ -72,6 +73,84 @@ document.addEventListener("DOMContentLoaded", () => {
 				message.textContent = "";
 			}, 300);
 		}, 2000);
+	}
+
+	// Función unificada para eliminar usuarios con confirmación y cuenta regresiva
+	function deleteUsersWithConfirmation(indices, isMultiple = false) {
+		const users = JSON.parse(localStorage.getItem("users")) || [];
+		const userNames = indices.map(idx => `${users[idx].name} ${users[idx].lastName}`);
+
+		// Actualizar texto del diálogo de confirmación
+		const confirmText = document.querySelector("#confirmDialog p");
+		if (isMultiple) {
+			confirmText.textContent = `¿Estás seguro de que quieres eliminar ${indices.length} usuario(s)?`;
+		} else {
+			confirmText.textContent = `¿Estás seguro de que quieres eliminar a ${userNames[0]}?`;
+		}
+
+		// Mostrar diálogo de confirmación
+		const confirmDialog = document.getElementById("confirmDialog");
+		confirmDialog.classList.remove("hidden");
+
+		// Configurar los índices pendientes
+		if (isMultiple) {
+			pendingDeleteIndices = [...indices];
+			pendingDeleteIndex = null;
+		} else {
+			pendingDeleteIndex = indices[0];
+			pendingDeleteIndices = [];
+		}
+	}
+
+	// Función para mostrar mensaje pequeño de eliminación (en lugar del mensaje grande)
+	function showDeleteMessage(text) {
+		const countdownEl = document.getElementById("countdownMessage");
+
+		countdownEl.textContent = text;
+		countdownEl.classList.remove("hidden");
+		countdownEl.classList.add("show");
+
+		setTimeout(() => {
+			countdownEl.classList.remove("show");
+			countdownEl.classList.add("hide");
+			setTimeout(() => {
+				countdownEl.classList.add("hidden");
+				countdownEl.classList.remove("hide");
+				countdownEl.textContent = "";
+			}, 400);
+		}, 1500); // Se muestra por 3 segundos
+	}
+
+	// Función para ejecutar la eliminación con cuenta regresiva
+	function executeDeleteWithCountdown(indices) {
+		const users = JSON.parse(localStorage.getItem("users")) || [];
+		const countdownEl = document.getElementById("countdownMessage");
+		let seconds = 5;
+
+		countdownEl.textContent = `🕒 Eliminando ${indices.length} usuario(s) en ${seconds} segundos...`;
+		countdownEl.classList.remove("hidden");
+		countdownEl.classList.add("show");
+
+		const countdown = setInterval(() => {
+			seconds--;
+			countdownEl.textContent = `🕒 Eliminando ${indices.length} usuario(s) en ${seconds} segundos...`;
+
+			if (seconds === 0) {
+				clearInterval(countdown);
+
+				// Eliminar usuarios (ordenar índices de mayor a menor para evitar problemas)
+				const sortedIndices = indices.sort((a, b) => b - a);
+				sortedIndices.forEach(idx => {
+					users.splice(idx, 1);
+				});
+
+				localStorage.setItem("users", JSON.stringify(users));
+
+				// Mostrar mensaje de éxito en el mismo lugar (no el mensaje grande del centro)
+				showDeleteMessage(`✅ ${indices.length > 1 ? 'Usuarios eliminados' : 'Usuario eliminado'} correctamente`);
+				renderUsers();
+			}
+		}, 1000);
 	}
 
 	// Botón volver
@@ -150,34 +229,196 @@ document.addEventListener("DOMContentLoaded", () => {
 		form.reset();
 	});
 
-	// Eliminar usuario (confirmación visual)
+	// Manejo del diálogo de confirmación - SE CONFIGURA UNA SOLA VEZ
 	const confirmDialog = document.getElementById("confirmDialog");
 	const confirmYes = document.getElementById("confirmYes");
 	const confirmNo = document.getElementById("confirmNo");
 
 	confirmYes.addEventListener("click", () => {
-		const users = JSON.parse(localStorage.getItem("users")) || [];
+		// Cerrar diálogo de confirmación
+		confirmDialog.classList.add("hidden");
 
-		if (pendingDeleteIndex !== null) {
-			users.splice(pendingDeleteIndex, 1);
-			localStorage.setItem("users", JSON.stringify(users));
+		// Determinar qué eliminar
+		let indicesToDelete = [];
+
+		if (pendingDeleteIndices.length > 0) {
+			// Eliminación múltiple
+			indicesToDelete = [...pendingDeleteIndices];
+		} else if (pendingDeleteIndex !== null) {
+			// Eliminación individual
+			indicesToDelete = [pendingDeleteIndex];
 		}
 
-		// Cierra primero el cuadro de confirmación
-		confirmDialog.classList.add("hidden");
-		pendingDeleteIndex = null;
+		// Ejecutar eliminación con cuenta regresiva
+		if (indicesToDelete.length > 0) {
+			executeDeleteWithCountdown(indicesToDelete);
+		}
 
-		// Luego actualiza la vista (le damos un pequeño retraso para asegurar que el DOM se actualiza)
-		setTimeout(() => {
-			renderUsers();
-		}, 50);
+		// Limpiar variables
+		pendingDeleteIndex = null;
+		pendingDeleteIndices = [];
 	});
 
 	confirmNo.addEventListener("click", () => {
 		confirmDialog.classList.add("hidden");
 		pendingDeleteIndex = null;
+		pendingDeleteIndices = [];
 	});
 
+	// Event listeners para bulk actions - SE CONFIGURAN UNA SOLA VEZ
+	document.getElementById("delete-selected-btn").addEventListener("click", () => {
+		const selected = Array.from(document.querySelectorAll(".select-user-checkbox:checked"))
+			.map(cb => parseInt(cb.dataset.index));
+		if (selected.length === 0) return;
+
+		deleteUsersWithConfirmation(selected, true);
+	});
+
+	document.getElementById("select-all-btn").addEventListener("click", () => {
+		document.querySelectorAll(".select-user-checkbox").forEach(cb => {
+			cb.style.display = "block";
+			cb.checked = true;
+		});
+		updateBulkActionsVisibility();
+	});
+
+	// Función auxiliar para mostrar/ocultar barra de acciones múltiples
+	function updateBulkActionsVisibility() {
+		const anySelected = Array.from(document.querySelectorAll(".select-user-checkbox"))
+			.some(cb => cb.checked);
+		document.getElementById("bulk-actions").classList.toggle("hidden", !anySelected);
+		document.getElementById("delete-selected-btn").classList.toggle("hidden", !anySelected);
+	}
+
+	// Función para renderizar usuarios
+	function renderUsers() {
+		const container = document.getElementById("users-cards");
+		const staticButton = document.getElementById("add-user-btn");
+
+		// Limpiar tarjetas excepto el botón "Añadir Usuario"
+		const userCards = container.querySelectorAll('.user_card');
+		userCards.forEach(card => {
+			if (card !== staticButton) card.remove();
+		});
+
+		const users = JSON.parse(localStorage.getItem("users")) || [];
+
+		// Configurar layout
+		container.style.display = users.length === 0 ? "flex" : "grid";
+		container.style.justifyContent = users.length === 0 ? "center" : "";
+
+		// Añadir el botón "Añadir Usuario" si no está
+		if (!container.contains(staticButton)) {
+			container.appendChild(staticButton);
+		}
+
+		// Mostrar u ocultar el botón "Añadir Usuario"
+		if (users.length < 6) {
+			staticButton.style.display = "flex";
+			requestAnimationFrame(() => staticButton.classList.add("visible"));
+		} else {
+			staticButton.classList.remove("visible");
+			setTimeout(() => staticButton.style.display = "none", 300);
+		}
+
+		// Ocultar barra de acciones múltiples al inicio
+		const bulkActions = document.getElementById("bulk-actions");
+		bulkActions.classList.add("hidden");
+		document.getElementById("delete-selected-btn").classList.add("hidden");
+
+		// Renderizar usuarios
+		users.forEach((user, index) => {
+			const card = document.createElement("div");
+			card.classList.add("user_card");
+			const color = getColorFromName(user.name, user.lastName);
+
+			card.innerHTML = `
+				<input type="checkbox" class="select-user-checkbox" style="display: none;" data-index="${index}">
+				<div class="users__icon-svg" style="background-color:${color}">
+					<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
+						<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
+					</svg>
+				</div>
+				<span class="user_name">${user.name} ${user.lastName}</span>
+				<div class="user_dropdown">
+					<button class="dropdown-toggle" title="Acciones">⋮</button>
+					<div class="dropdown-menu" style="display: none;">
+						<button class="edit-user-btn">Editar</button>
+						<button class="delete-user-btn">Eliminar</button>
+						<button class="toggle-select-btn">Seleccionar</button>
+					</div>
+				</div>
+			`;
+
+			const toggleBtn = card.querySelector(".dropdown-toggle");
+			const menu = card.querySelector(".dropdown-menu");
+
+			// Mostrar/ocultar menú desplegable
+			toggleBtn.addEventListener("click", (e) => {
+				e.stopPropagation();
+
+				// Cerrar todos los otros menús primero
+				document.querySelectorAll(".dropdown-menu").forEach(m => {
+					if (m !== menu) {
+						m.style.display = "none";
+					}
+				});
+
+				// Toggle del menú actual
+				menu.style.display = menu.style.display === "none" ? "flex" : "none";
+			});
+
+			// Evitar que el clic dentro del menú lo cierre
+			menu.addEventListener("click", (e) => {
+				e.stopPropagation();
+			});
+
+			// Editar
+			card.querySelector(".edit-user-btn").addEventListener("click", () => {
+				menu.style.display = "none";
+
+				isEditing = true;
+				editingIndex = index;
+				document.getElementById("form__name").value = user.name;
+				document.getElementById("form__lastName").value = user.lastName;
+				submitBtn.textContent = "Guardar cambios";
+				formTitle.textContent = "Editar usuario";
+				document.getElementById("users").classList.add("users--hidden");
+				document.getElementById("form").classList.remove("form--hidden");
+				setTimeout(() => document.getElementById("form").classList.add("form--show"), 10);
+			});
+
+			// Eliminar individual - usa la función unificada
+			card.querySelector(".delete-user-btn").addEventListener("click", () => {
+				menu.style.display = "none";
+				deleteUsersWithConfirmation([index], false);
+			});
+
+			// Seleccionar (mostrar checkbox)
+			card.querySelector(".toggle-select-btn").addEventListener("click", () => {
+				menu.style.display = "none";
+
+				// Mostrar todos los checkboxes, no solo el del usuario actual
+				document.querySelectorAll(".select-user-checkbox").forEach(checkbox => {
+					checkbox.style.display = "block";
+				});
+
+				// Marcar el checkbox del usuario actual
+				const checkbox = card.querySelector(".select-user-checkbox");
+				checkbox.checked = true;
+
+				updateBulkActionsVisibility();
+			});
+
+			// Event listener para cambios en checkbox
+			const checkbox = card.querySelector(".select-user-checkbox");
+			checkbox.addEventListener("change", updateBulkActionsVisibility);
+
+			container.insertBefore(card, staticButton);
+		});
+	}
+
+	// Inicializar la aplicación
 	renderUsers();
 });
 
@@ -191,186 +432,4 @@ function getColorFromName(name, lastName) {
 	let sum = 0;
 	for (let i = 0; i < full.length; i++) sum += full.charCodeAt(i);
 	return colors[sum % colors.length];
-}
-
-function renderUsers() {
-	const container = document.getElementById("users-cards");
-	const staticButton = document.getElementById("add-user-btn");
-
-	// Limpiar tarjetas excepto el botón "Añadir Usuario"
-	const userCards = container.querySelectorAll('.user_card');
-	userCards.forEach(card => {
-		if (card !== staticButton) card.remove();
-	});
-
-	const users = JSON.parse(localStorage.getItem("users")) || [];
-
-	// Configurar layout
-	container.style.display = users.length === 0 ? "flex" : "grid";
-	container.style.justifyContent = users.length === 0 ? "center" : "";
-
-	// Añadir el botón "Añadir Usuario" si no está
-	if (!container.contains(staticButton)) {
-		container.appendChild(staticButton);
-	}
-
-	// Mostrar u ocultar el botón "Añadir Usuario"
-	if (users.length < 6) {
-		staticButton.style.display = "flex";
-		requestAnimationFrame(() => staticButton.classList.add("visible"));
-	} else {
-		staticButton.classList.remove("visible");
-		setTimeout(() => staticButton.style.display = "none", 300);
-	}
-
-	// Ocultar barra de acciones múltiples al inicio
-	const bulkActions = document.getElementById("bulk-actions");
-	bulkActions.classList.add("hidden");
-	document.getElementById("delete-selected-btn").classList.add("hidden");
-
-	// Renderizar usuarios
-	users.forEach((user, index) => {
-		const card = document.createElement("div");
-		card.classList.add("user_card");
-		const color = getColorFromName(user.name, user.lastName);
-
-		card.innerHTML = `
-			<input type="checkbox" class="select-user-checkbox" style="display: none;" data-index="${index}">
-			<div class="users__icon-svg" style="background-color:${color}">
-				<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
-					<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
-				</svg>
-			</div>
-			<span class="user_name">${user.name} ${user.lastName}</span>
-			<div class="user_dropdown">
-				<button class="dropdown-toggle" title="Acciones">⋮</button>
-				<div class="dropdown-menu" style="display: none;">
-					<button class="edit-user-btn">Editar</button>
-					<button class="delete-user-btn">Eliminar</button>
-					<button class="toggle-select-btn">Seleccionar</button>
-				</div>
-			</div>
-		`;
-
-		const toggleBtn = card.querySelector(".dropdown-toggle");
-		const menu = card.querySelector(".dropdown-menu");
-
-		// Mostrar/ocultar menú desplegable
-		toggleBtn.addEventListener("click", (e) => {
-			e.stopPropagation();
-
-			// Cerrar todos los otros menús primero
-			document.querySelectorAll(".dropdown-menu").forEach(m => {
-				if (m !== menu) {
-					m.style.display = "none";
-				}
-			});
-
-			// Toggle del menú actual
-			menu.style.display = menu.style.display === "none" ? "flex" : "none";
-		});
-
-		// Evitar que el clic dentro del menú lo cierre
-		menu.addEventListener("click", (e) => {
-			e.stopPropagation();
-		});
-
-		// Editar
-		card.querySelector(".edit-user-btn").addEventListener("click", () => {
-			menu.style.display = "none";
-
-			isEditing = true;
-			editingIndex = index;
-			document.getElementById("form__name").value = user.name;
-			document.getElementById("form__lastName").value = user.lastName;
-			submitBtn.textContent = "Guardar cambios";
-			formTitle.textContent = "Editar usuario";
-			document.getElementById("users").classList.add("users--hidden");
-			document.getElementById("form").classList.remove("form--hidden");
-			setTimeout(() => document.getElementById("form").classList.add("form--show"), 10);
-		});
-
-		// Eliminar
-		card.querySelector(".delete-user-btn").addEventListener("click", () => {
-			menu.style.display = "none";
-
-			pendingDeleteIndex = index;
-			document.getElementById("confirmDialog").classList.remove("hidden");
-		});
-
-		// Seleccionar (mostrar checkbox)
-		card.querySelector(".toggle-select-btn").addEventListener("click", () => {
-			menu.style.display = "none";
-
-			// Mostrar todos los checkboxes, no solo el del usuario actual
-			document.querySelectorAll(".select-user-checkbox").forEach(checkbox => {
-				checkbox.style.display = "block";
-			});
-
-			// Marcar el checkbox del usuario actual
-			const checkbox = card.querySelector(".select-user-checkbox");
-			checkbox.checked = true;
-
-			updateBulkActionsVisibility();
-		});
-
-		container.insertBefore(card, staticButton);
-	});
-
-	// Eliminar seleccionados
-	document.getElementById("delete-selected-btn").addEventListener("click", () => {
-		const selected = Array.from(document.querySelectorAll(".select-user-checkbox:checked"))
-			.map(cb => parseInt(cb.dataset.index));
-		if (selected.length === 0) return;
-
-		const countdownEl = document.getElementById("countdownMessage");
-		let seconds = 5;
-		countdownEl.textContent = `🕒 Eliminando ${selected.length} usuario(s) en ${seconds} segundos...`;
-		countdownEl.classList.remove("hidden");
-		countdownEl.classList.add("show");
-
-		const countdown = setInterval(() => {
-			seconds--;
-			countdownEl.textContent = `🕒 Eliminando ${selected.length} usuario(s) en ${seconds} segundos...`;
-
-			if (seconds === 0) {
-				clearInterval(countdown);
-				countdownEl.classList.remove("show");
-				countdownEl.classList.add("hide");
-
-				setTimeout(() => {
-					countdownEl.classList.add("hidden");
-					countdownEl.classList.remove("hide");
-					countdownEl.textContent = "";
-				}, 400);
-
-				const updatedUsers = users.filter((_, idx) => !selected.includes(idx));
-				localStorage.setItem("users", JSON.stringify(updatedUsers));
-				renderUsers();
-			}
-		}, 1000);
-	});
-
-
-	// Seleccionar todos
-	document.getElementById("select-all-btn").addEventListener("click", () => {
-		document.querySelectorAll(".select-user-checkbox").forEach(cb => {
-			cb.style.display = "block";
-			cb.checked = true;
-		});
-		updateBulkActionsVisibility();
-	});
-
-	// Checkboxes individuales
-	document.querySelectorAll(".select-user-checkbox").forEach(cb => {
-		cb.addEventListener("change", updateBulkActionsVisibility);
-	});
-
-	// Función auxiliar para mostrar/ocultar barra de acciones múltiples
-	function updateBulkActionsVisibility() {
-		const anySelected = Array.from(document.querySelectorAll(".select-user-checkbox"))
-			.some(cb => cb.checked);
-		document.getElementById("bulk-actions").classList.toggle("hidden", !anySelected);
-		document.getElementById("delete-selected-btn").classList.toggle("hidden", !anySelected);
-	}
 }
