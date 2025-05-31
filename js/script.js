@@ -22,6 +22,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	submitBtn = document.querySelector(".form__submit");
 	formTitle = document.querySelector(".form__title");
 
+	// Event listener global para cerrar menús desplegables
+	document.addEventListener("click", (e) => {
+		// Si el clic no es en un botón de toggle o dentro de un menú, cerrar todos los menús
+		if (!e.target.closest('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
+			document.querySelectorAll(".dropdown-menu").forEach(menu => {
+				menu.style.display = "none";
+			});
+		}
+	});
+
 	// Oculta el formulario con animación (por defecto)
 	function closeForm(animated = true) {
 		formSection.classList.remove("form--show");
@@ -225,7 +235,7 @@ function renderUsers() {
 		const color = getColorFromName(user.name, user.lastName);
 
 		card.innerHTML = `
-			<input type="checkbox" class="select-user-checkbox hidden" data-index="${index}">
+			<input type="checkbox" class="select-user-checkbox" style="display: none;" data-index="${index}">
 			<div class="users__icon-svg" style="background-color:${color}">
 				<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
 					<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
@@ -234,7 +244,7 @@ function renderUsers() {
 			<span class="user_name">${user.name} ${user.lastName}</span>
 			<div class="user_dropdown">
 				<button class="dropdown-toggle" title="Acciones">⋮</button>
-				<div class="dropdown-menu hidden">
+				<div class="dropdown-menu" style="display: none;">
 					<button class="edit-user-btn">Editar</button>
 					<button class="delete-user-btn">Eliminar</button>
 					<button class="toggle-select-btn">Seleccionar</button>
@@ -245,11 +255,19 @@ function renderUsers() {
 		const toggleBtn = card.querySelector(".dropdown-toggle");
 		const menu = card.querySelector(".dropdown-menu");
 
-		// Mostrar menú desplegable
+		// Mostrar/ocultar menú desplegable
 		toggleBtn.addEventListener("click", (e) => {
 			e.stopPropagation();
-			document.querySelectorAll(".dropdown-menu").forEach(m => m.classList.add("hidden"));
-			menu.classList.remove("hidden");
+
+			// Cerrar todos los otros menús primero
+			document.querySelectorAll(".dropdown-menu").forEach(m => {
+				if (m !== menu) {
+					m.style.display = "none";
+				}
+			});
+
+			// Toggle del menú actual
+			menu.style.display = menu.style.display === "none" ? "flex" : "none";
 		});
 
 		// Evitar que el clic dentro del menú lo cierre
@@ -259,6 +277,8 @@ function renderUsers() {
 
 		// Editar
 		card.querySelector(".edit-user-btn").addEventListener("click", () => {
+			menu.style.display = "none";
+
 			isEditing = true;
 			editingIndex = index;
 			document.getElementById("form__name").value = user.name;
@@ -272,15 +292,25 @@ function renderUsers() {
 
 		// Eliminar
 		card.querySelector(".delete-user-btn").addEventListener("click", () => {
+			menu.style.display = "none";
+
 			pendingDeleteIndex = index;
 			document.getElementById("confirmDialog").classList.remove("hidden");
 		});
 
 		// Seleccionar (mostrar checkbox)
 		card.querySelector(".toggle-select-btn").addEventListener("click", () => {
+			menu.style.display = "none";
+
+			// Mostrar todos los checkboxes, no solo el del usuario actual
+			document.querySelectorAll(".select-user-checkbox").forEach(checkbox => {
+				checkbox.style.display = "block";
+			});
+
+			// Marcar el checkbox del usuario actual
 			const checkbox = card.querySelector(".select-user-checkbox");
-			checkbox.classList.remove("hidden");
 			checkbox.checked = true;
+
 			updateBulkActionsVisibility();
 		});
 
@@ -301,7 +331,7 @@ function renderUsers() {
 	// Seleccionar todos
 	document.getElementById("select-all-btn").addEventListener("click", () => {
 		document.querySelectorAll(".select-user-checkbox").forEach(cb => {
-			cb.classList.remove("hidden");
+			cb.style.display = "block";
 			cb.checked = true;
 		});
 		updateBulkActionsVisibility();
