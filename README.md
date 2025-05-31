@@ -9,8 +9,9 @@
 - ✅ Formulario de creación y edición de usuarios finalizado
 - ✅ Almacenamiento local con localStorage
 - ✅ Funcionalidad de eliminar usuario lista
-- ✅ En desarrollo: selección múltiple y eliminación masiva
-+ 🧪 En desarrollo: Responsive design en progreso
+- ✅ Selección múltiple y eliminación masiva
++ 🛠️ En desarrollo: cuenta regresiva al eliminar usuario(s)
++ 🛠️ En desarrollo: Responsive design en progreso
 
 ---
 
@@ -26,7 +27,7 @@
 - Mostrar botón "Añadir usuario" solo si hay menos de 6
 - Sincronización con localStorage (persistencia de usuarios)
 - Interfaz amigable y adaptable
-- En desarrollo: eliminación múltiple por selección
+- Eliminación múltiple por selección
 
 ---
 
