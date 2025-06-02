@@ -1,0 +1,10 @@
+/*CHECKBOX*/
+
+.select-user-checkbox {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
