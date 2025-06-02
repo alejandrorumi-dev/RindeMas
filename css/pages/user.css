@@ -1,3 +1,9 @@
 body {
-	background-color: var(--bg-color);
+	background-image: url(../../assets/images/fondo-user.jpg);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	min-height: 100vh;
+	color: var(--text-color);
+	/* si quieres que el texto contraste */
 }
