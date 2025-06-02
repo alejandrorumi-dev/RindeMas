@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  justify-content: center;
+  background-color: var(--primary-color);
+  height: 5rem;
+  padding: 0 2rem;
+}
+
+.header__info {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.header__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header__icon-svg {
+  color: var(--accent-color);
+}
+
+.header__title h1 {
+  font-size: 1.75rem;
+  color: var(--text-color);
+  margin: 0;
+}
