@@ -4,19 +4,26 @@
 
 ## 🚀 Estado del proyecto
 
-1. **Página de inicio ✅**
+### 1. **Página de inicio ✅**
 
-- ✅ Formulario de creación de usuarios en proceso
-- ✅ Base de datos local en planificación
-- ✅ Formulario de creación y edición de usuarios finalizado
-- ✅ Almacenamiento local con localStorage
-- ✅ Funcionalidad de eliminar usuario lista
+- ✅ Estructura HTML finalizada
+- ✅ Estilos CSS aplicados (colores, tipografía, grid, botones, etc.)
+- ✅ Formulario de creación de usuarios finalizado
+- ✅ Edición de usuario con validación visual
+- ✅ Prevención de usuarios duplicados
+- ✅ Almacenamiento local con `localStorage`
 - ✅ Selección múltiple y eliminación masiva
-- ✅ Cuenta regresiva al eliminar usuario(s)
+- ✅ Eliminación con cuenta regresiva
+- ✅ Transiciones y alertas visuales estilizadas
 + 🛠️ En desarrollo: Responsive design
 
-2. **Página de usuario (En desarrollo 🛠️)**
+---
 
+### 2. **Página de usuario (En desarrollo 🛠️)**
+
++ 🛠️ En desarrollo: Estructura HTML inicial
++ 🛠️ En desarrollo: Imagen de fondo
++ 🛠️ En desarrollo: Estilos base en CSS
 + 🛠️ En desarrollo: Responsive design
 
 ---
