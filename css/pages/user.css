@@ -23,10 +23,23 @@ body::before {
 
 .header {
   background-color: transparent;
-  height: 15rem;
+  height: 10rem;
+  
 }
 
 .header__title h1 {
   font-size: 3.25rem;
   color: var(--primary-other);
+}
+
+.users__info {
+  text-align: center;
+}
+
+.users__info--title {
+  font-size: 3rem;
+}
+
+.users__info--subtitle {
+  font-size: 2rem;
 }
