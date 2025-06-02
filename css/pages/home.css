@@ -1,0 +1,111 @@
+/* ============================
+   RINDEMÁS - PÁGINA DE INICIO
+   Sección de usuarios y tarjetas
+============================ */
+
+/* SECCIÓN DE USUARIOS */
+
+.users {
+  background-color: var(--bg-color-secundary);
+  min-height: calc(100vh - 13.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 3rem;
+}
+
+.users--hidden {
+  display: none;
+}
+
+.users__info {
+  text-align: center;
+}
+
+.users__info--title {
+  color: var(--text-color-secundary);
+  font-size: 2.5rem;
+}
+
+.users__info--subtitle {
+  color: var(--text-color-other);
+  font-size: 1.25rem;
+}
+
+/* ACCIONES EN MASA */
+
+.bulk-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+
+.bulk-actions button {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: #fff;
+  transition: background-color 0.2s;
+}
+
+.bulk-actions button:hover {
+  background-color: var(--accent-color);
+}
+
+/* ESTADOS DE TARJETA AÑADIR */
+
+.add_user {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.add_user.visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* ACCIONES (EDITAR/ELIMINAR) DENTRO DE LAS CARDS */
+
+.user_actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.user_card:hover .user_actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.user_actions button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 50%;
+}
+
+.user_actions svg {
+  width: 20px;
+  height: 20px;
+  stroke: #555;
+  transition: stroke 0.2s;
+}
+
+.user_actions button:hover svg {
+  stroke: #000;
+}
