@@ -1,0 +1,10 @@
+/* BASE */
+@import url('./base/variables.css');
+@import url('./base/typography.css');
+@import url('./base/layout.css');
+
+/* COMPONENTES opcionales para esta página */
+@import url('./components/utility.css');
+
+/* PÁGINA DE USUARIO */
+@import url('./pages/user.css');
