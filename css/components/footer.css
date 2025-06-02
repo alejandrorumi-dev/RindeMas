@@ -1,0 +1,17 @@
+footer {
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg-color);
+  height: 5rem;
+  padding: 0 2rem;
+}
+
+.footer__info {
+  display: flex;
+  align-items: center;
+}
+
+.footer__info span {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
