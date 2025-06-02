@@ -1,3 +1,7 @@
+/* Fuentes de Google */
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+
 /* BASE */
 @import url('./base/variables.css');
 @import url('./base/typography.css');
