@@ -25,8 +25,11 @@ body::before {
 
 .header {
   background-color: transparent;
-  height: 10rem;
-  
+  height: 8rem;
+}
+
+.header__title {
+  gap: 1rem;
 }
 
 .header__title h1 {
@@ -47,6 +50,31 @@ body::before {
 .users__info--subtitle {
   font-size: 2rem;
 }
+
+/*Estilos para la línea divisoria*/
+
+#add__line {
+  width: 60%;
+  align-items: center;
+  height: 2px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), var(--accent-color), rgba(0, 0, 0, 0));
+  margin: 3rem auto;
+  animation: fadeInLine 2s ease-in-out;
+}
+
+@keyframes fadeInLine {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/*Estilos para los botones*/
+
 
 /*Estilos del footer*/
 
