@@ -43,3 +43,7 @@ body::before {
 .users__info--subtitle {
   font-size: 2rem;
 }
+
+footer {
+  background-color: transparent;
+}
