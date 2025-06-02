@@ -21,6 +21,8 @@ body::before {
   z-index: -1;
 }
 
+/*Estilos del header*/
+
 .header {
   background-color: transparent;
   height: 10rem;
@@ -31,6 +33,8 @@ body::before {
   font-size: 3.25rem;
   color: var(--primary-other);
 }
+
+/*Estilos del contenido del user*/
 
 .users__info {
   text-align: center;
@@ -43,6 +47,8 @@ body::before {
 .users__info--subtitle {
   font-size: 2rem;
 }
+
+/*Estilos del footer*/
 
 footer {
   background-color: transparent;
