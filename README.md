@@ -47,27 +47,66 @@
 
 ## 📂 Estructura del proyecto
 
-```bash
+```plaintext
+
 RindeMas/
+├── .vscode/
+│   └── settings.json
 ├── assets/
+│   ├── images/
+│   │   └── Fondo-Usuario.png
 │   ├── logo/
 │   │   ├── favicon-16x16.png
 │   │   └── logo.png
 │   └── wireframe/
-│       ├── ejercicios.png
-│       ├── inicio.png
-│       ├── rutina.png
-│       └── usuario.png
+│       ├── RindeMás-Ejercicios.png
+│       ├── RindeMás-Inicio.png
+│       ├── RindeMás-Rutina.png
+│       └── RindeMás-Usuario.png
 ├── css/
-│   └── style.css
+│   ├── style.css
+│   ├── base/
+│   │   ├── layout.css
+│   │   ├── typography.css
+│   │   └── variables.css
+│   ├── components/
+│   │   ├── card.css
+│   │   ├── checkbox.css
+│   │   ├── countdown.css
+│   │   ├── dialog.css
+│   │   ├── dropdown.css
+│   │   ├── footer.css
+│   │   ├── form.css
+│   │   ├── header.css
+│   │   ├── message.css
+│   │   └── utility.css
+│   └── pages/
+│       └── home.css
 ├── data/
 │   └── exercises.json
 ├── js/
-│   └── script.js
+│   ├── pages/
+│   │   └── home/
+│   │       ├── eventHandlers.js
+│   │       ├── formHandler.js
+│   │       ├── main.js
+│   │       └── userRenderer.js
+│   └── shared/
+│       ├── components/
+│       │   ├── confirmation.js
+│       │   └── ui.js
+│       ├── config/
+│       │   └── constants.js
+│       └── utils/
+│           ├── helpers.js
+│           └── storage.js
+├── pages/
+│   └── user.html
 ├── index.html
 ├── .gitignore
 ├── LICENSE
 └── README.md
+
 ```
 
 ---
