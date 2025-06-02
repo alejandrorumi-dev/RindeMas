@@ -1,9 +1,32 @@
 body {
-	background-image: url(../../assets/images/fondo-user.jpg);
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	min-height: 100vh;
-	color: var(--text-color);
-	/* si quieres que el texto contraste */
+  position: relative;
+  min-height: 100vh;
+  color: var(--text-color);
+  z-index: 0;
+}
+
+/* Imagen de fondo con opacidad */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("../../assets/images/fondo-user.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.header {
+  background-color: transparent;
+  height: 15rem;
+}
+
+.header__title h1 {
+  font-size: 3.25rem;
+  color: var(--primary-other);
 }
