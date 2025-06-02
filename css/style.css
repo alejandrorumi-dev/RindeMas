@@ -484,6 +484,8 @@ footer {
   display: none;
 }
 
+/*MENÚ DESPLEGABLE*/
+
 .user_dropdown {
   position: absolute;
   top: 8px;
@@ -528,6 +530,8 @@ footer {
   border-radius: 6px;
 }
 
+/*CHECKBOX*/
+
 .select-user-checkbox {
   position: absolute;
   top: 8px;
@@ -536,6 +540,8 @@ footer {
   height: 18px;
   cursor: pointer;
 }
+
+/*CUENTA ATRÁS*/
 
 .countdown-message {
   position: fixed;
