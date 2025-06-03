@@ -1,24 +1,23 @@
-/* TARJETAS DE USUARIO */
-
-.user_card {
-  all: unset;
-  width: 280px;
-  height: 230px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  padding: 1rem;
-  gap: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  text-align: center;
-  position: relative;
+/* CONTAINER DE TARJETAS - AJUSTADO PARA NO HACER SCROLL */
+.users__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem; /* Reducido de 3rem a 2rem */
+  justify-items: center;
+  width: 100%;
+  max-width: 1000px;
+  flex: 1; /* Toma el espacio restante */
+  overflow: hidden; /* Sin scroll */
+  padding: 0 1rem;
+  
+  /* Cuando hay pocos elementos, centrar */
+  align-content: center;
+  
+  /* Cuando hay muchos elementos, ajustar */
+  max-height: 100%;
 }
 
+/* TARJETAS DE USUARIO - TAMAÑO ADAPTATIVO */
 .users__cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -26,10 +25,48 @@
   justify-items: center;
   width: 100%;
   max-width: 1000px;
-  margin: 2rem auto;
+  flex: 1; /* Toma el espacio restante */
+  overflow: hidden; /* Sin scroll */
   padding: 0 1rem;
+  
+  /* Por defecto centrado verticalmente para pocos elementos */
+  align-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Cuando hay muchas tarjetas (4 o más), cambiar el layout */
+.users__cards.many-cards {
+  gap: 2rem;
+  align-content: start; /* Alineación superior */
+  padding-top: 1rem;
+}
+
+/* TARJETAS DE USUARIO - TAMAÑO NORMAL POR DEFECTO */
+.user_card {
+  all: unset;
+  width: 280px;
+  height: 230px; /* Tamaño normal por defecto */
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 1rem;
+  gap: 2rem; /* Espacio normal */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, height 0.3s ease, gap 0.3s ease;
+  text-align: center;
+  position: relative;
+}
+
+/* Tarjetas compactas cuando hay muchas */
+.users__cards.many-cards .user_card {
+  height: 180px;
+  gap: 1.5rem;
+}
 
 .user_card:hover {
   transform: translateY(-4px);
@@ -42,16 +79,31 @@
 }
 
 .user_name {
-  font-size: 1.5rem;
+  font-size: 1.5rem; /* Tamaño normal por defecto */
   font-weight: 600;
   color: var(--text-color-other);
+  transition: font-size 0.3s ease;
+}
+
+/* Texto más pequeño cuando hay muchas tarjetas */
+.users__cards.many-cards .user_name {
+  font-size: 1.25rem;
 }
 
 .users__icon-svg {
-  width: 48px;
+  width: 48px; /* Tamaño normal por defecto */
   height: 48px;
   margin-bottom: 1rem;
   background-color: var(--card--bg);
   padding: 2rem;
   border-radius: 50%;
+  transition: width 0.3s ease, height 0.3s ease, padding 0.3s ease, margin-bottom 0.3s ease;
+}
+
+/* Icono más pequeño cuando hay muchas tarjetas */
+.users__cards.many-cards .users__icon-svg {
+  width: 40px;
+  height: 40px;
+  padding: 1.5rem;
+  margin-bottom: 0.5rem;
 }
