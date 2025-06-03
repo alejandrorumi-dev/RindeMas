@@ -8,7 +8,7 @@
 
 .header__info {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .header__title {
@@ -22,7 +22,7 @@
 }
 
 .header__title h1 {
-  font-size: 2.5rem;
+  font-size: 3.25rem;
   color: var(--primary-other);
   margin: 0;
 }
