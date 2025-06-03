@@ -10,6 +10,7 @@ import { renderUsers } from './userRenderer.js';
 // Variables para el estado del formulario
 let isEditing = false;
 let editingIndex = null;
+let editedImage = null;
 
 /**
  * Configura los event listeners del formulario
@@ -49,17 +50,28 @@ function handleFormSubmit(e) {
     }
 
     if (isEditing && editingIndex !== null) {
-        // Modo edición
         const currentUser = users[editingIndex];
-        const hasChanges = currentUser.name !== firstName || currentUser.lastName !== lastName;
+
+        const hasChanges =
+            currentUser.name !== firstName ||
+            currentUser.lastName !== lastName ||
+            (editedImage && currentUser.image !== editedImage);
 
         if (!hasChanges) {
             showFormInfo(MESSAGES.NO_CHANGES);
             return;
         }
 
-        updateUser(editingIndex, { name: firstName, lastName: lastName });
+        const updatedUser = {
+            ...currentUser,
+            name: firstName,
+            lastName: lastName,
+            image: editedImage || currentUser.image || null
+        };
+
+        updateUser(editingIndex, updatedUser);
         resetEditingState();
+        editedImage = null;
         closeForm();
         showBigMessage(MESSAGES.USER_EDITED);
         renderUsers();
@@ -82,6 +94,51 @@ function handleFormSubmit(e) {
 export function setEditingMode(index) {
     isEditing = true;
     editingIndex = index;
+    editedImage = null;
+
+    const users = getUsers();
+    const user = users[index];
+
+    const form = document.getElementById("form__content");
+
+    // Cambiar título
+    document.querySelector(".form__title").textContent = "Editar usuario";
+
+    // Rellenar campos
+    document.getElementById("form__name").value = user.name;
+    document.getElementById("form__lastName").value = user.lastName;
+
+    // Evitar duplicar el input si ya existe
+    if (!document.getElementById("form__photo")) {
+        // LABEL
+        const label = document.createElement("label");
+        label.setAttribute("for", "form__photo");
+        label.className = "form__label";
+        label.textContent = "Foto de perfil:";
+
+        // INPUT FILE
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.id = "form__photo";
+        input.className = "form__input";
+
+        const submitBtn = form.querySelector(".form__submit");
+        form.insertBefore(label, submitBtn);
+        form.insertBefore(input, submitBtn);
+
+        // Leer imagen si se selecciona
+        input.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                editedImage = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
 }
 
 /**
@@ -90,4 +147,5 @@ export function setEditingMode(index) {
 function resetEditingState() {
     isEditing = false;
     editingIndex = null;
+    editedImage = null;
 }
