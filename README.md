@@ -63,6 +63,8 @@
 #### Captura de pantalla de Inicio con seis usuarios creados, el máximo permitido
 ![Con 6 Usuarios](./assets/captures/home/RindeMas-homeUser6.png)
 
+---
+
 ### Página de Usuario
 
 #### Captura de pantalla de Inicio a la página del Usuario
