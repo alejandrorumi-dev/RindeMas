@@ -16,6 +16,7 @@
 
 .dropdown-menu {
   position: absolute;
+  min-width: 110px;
   top: 30px;
   right: 0;
   background-color: #fff;
