@@ -64,7 +64,7 @@
 
 /* Tarjetas compactas cuando hay muchas */
 .users__cards.many-cards .user_card {
-  height: 180px;
+  height: 170px;
   gap: 1.5rem;
 }
 
