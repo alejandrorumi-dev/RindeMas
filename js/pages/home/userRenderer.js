@@ -145,10 +145,51 @@ function setupUserCardEvents(card, user, index) {
         const esCheckbox = clickedElement.closest(".select-user-checkbox");
 
         if (!esMenu && !esCheckbox) {
-            localStorage.setItem("usuarioActual", JSON.stringify(user));
-            window.location.href = "./pages/user.html"; // ✅ ¡Esta es la ruta correcta desde index.html!
+            navigateToUser(user);
         }
     });
+}
 
+/**
+ * Navega al usuario con pantalla de carga suave
+ * @param {Object} user - Datos del usuario
+ */
+function navigateToUser(user) {
+    // Crear overlay de carga
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'loading-overlay';
 
+    const userName = `${user.name} ${user.lastName}`;
+    const userColor = getColorFromName(user.name, user.lastName);
+
+    loadingOverlay.innerHTML = `
+        <div class="loading-content">
+            <div class="loading-user-icon" style="background-color: ${userColor}">
+                <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
+                    <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
+                </svg>
+            </div>
+            <h2 class="loading-title">Cargando, ${userName}...</h2>
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    `;
+
+    // Añadir al body
+    document.body.appendChild(loadingOverlay);
+
+    // Activar animación después de un frame
+    requestAnimationFrame(() => {
+        loadingOverlay.classList.add('active');
+    });
+
+    // Guardar datos del usuario
+    localStorage.setItem("usuarioActual", JSON.stringify(user));
+
+    // Navegar después de 2.5 segundos SIN fade-out previo
+    setTimeout(() => {
+        // Navegar directamente manteniendo el overlay visible
+        window.location.href = "./pages/user.html";
+    }, 2500);
 }
