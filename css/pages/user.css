@@ -59,7 +59,7 @@ body::before {
   height: 2px;
   background: linear-gradient(to right, rgba(0, 0, 0, 0), var(--accent-color), rgba(0, 0, 0, 0));
   margin: 5rem auto;
-  animation: fadeInLine 2s ease-in-out;
+  animation: fadeInLine 1.5s ease-in-out;
 }
 
 @keyframes fadeInLine {
@@ -75,18 +75,30 @@ body::before {
 
 /*Estilos para los botones*/
 
+/* Animaciones de entrada */
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* Contenedor general: horizontal */
 .user-actions {
   width: 85%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap; /* por si en móvil se rompe */
+  flex-wrap: wrap;
   gap: 2rem;
   padding: 2rem 0;
 }
 
-/* Contenedor de cada botón + etiqueta */
+/* Cada botón + etiqueta */
 .user-action {
   display: flex;
   flex-direction: column;
@@ -95,31 +107,40 @@ body::before {
   min-width: 120px;
 }
 
-/* Botón redondo */
+/* Botón redondo con animación de entrada */
 .user-action__btn {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background-color: rgba(0, 123, 255, 0.5); /* ejemplo azul translúcido */
+  background-color: var(--primary-other);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease;
   cursor: pointer;
   position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: popIn 1.5s ease-out forwards;
+  animation-delay: var(--delay, 0s); /* por si usas delay en línea */
 }
 
+/* Hover */
 .user-action__btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 16px var(--accent-color);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px var(--accent-color);
 }
 
-/* Icono dentro */
+/* Presión */
+.user-action__btn:active {
+  transform: scale(0.95);
+}
+
+/* Icono SVG dentro */
 .user-action__icon {
   width: 36px;
   height: 36px;
   fill: white;
+  transition: transform 0.2s ease;
 }
 
 /* Etiqueta oculta por defecto */
@@ -135,8 +156,8 @@ body::before {
   text-align: center;
 }
 
-/* Mostrar etiqueta al hacer hover */
-.user-action:hover .user-action__label {
+/* Solo mostrar cuando el cursor está sobre el botón */
+.user-action__btn:hover + .user-action__label {
   opacity: 1;
   transform: translateY(0);
 }
@@ -146,12 +167,12 @@ body::before {
 .users__icon-svg {
   width: 60px;
   height: 60px;
-  stroke: var(--bg-color);
+  stroke: var(--text-color-secundary);
   transition: stroke 0.2s;
 }
 
 .user-action__btn:hover .users__icon-svg {
-  stroke: var(--text-color);
+  stroke: var(--bg-color);
   width: 80px;
   height: 80px;
 }
