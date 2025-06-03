@@ -1,18 +1,21 @@
 /* ============================
    RINDEMÁS - PÁGINA DE INICIO
-   Sección de usuarios y tarjetas
+   Layout sin scroll y altura fija
 ============================ */
 
 /* SECCIÓN DE USUARIOS */
-
 .users {
   background-color: var(--bg-color-secundary);
-  min-height: calc(100vh - 13.5rem);
+  /* Altura calculada: 100vh - (header 8rem + footer 8rem) */
+  height: calc(100vh - 16rem);
+  min-height: calc(100vh - 16rem);
+  max-height: calc(100vh - 16rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-  gap: 3rem;
+  gap: 2rem; /* Reducido de 3rem a 2rem */
+  overflow: hidden; /* Evitar scroll */
 }
 
 .users--hidden {
@@ -21,26 +24,27 @@
 
 .users__info {
   text-align: center;
+  flex-shrink: 0; /* No se comprime */
 }
 
 .users__info--title {
   color: var(--text-color-secundary);
   font-size: 2.5rem;
+  margin: 2rem 0 1rem 0; /* Espaciado controlado */
 }
 
 .users__info--subtitle {
   color: var(--text-color-other);
   font-size: 1.25rem;
+  margin: 0; /* Sin margen automático */
 }
 
 /* ACCIONES EN MASA */
-
 .bulk-actions {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: -1rem;
-  margin-bottom: 1rem;
+  flex-shrink: 0; /* No se comprime */
 }
 
 .bulk-actions button {
@@ -59,7 +63,6 @@
 }
 
 /* ESTADOS DE TARJETA AÑADIR */
-
 .add_user {
   opacity: 0;
   transform: scale(0.95);
@@ -74,7 +77,6 @@
 }
 
 /* ACCIONES (EDITAR/ELIMINAR) DENTRO DE LAS CARDS */
-
 .user_actions {
   position: absolute;
   top: 8px;
