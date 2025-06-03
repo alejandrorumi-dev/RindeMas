@@ -37,6 +37,59 @@ body::before {
   color: var(--primary-other);
 }
 
+/*Estilos para el botón de cambiar de usuario*/
+
+.change-user-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 20;
+}
+
+.change-user-btn {
+  all: unset;
+  cursor: pointer;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.change-user-btn:hover {
+  transform: scale(1.1);
+}
+
+.user_avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: var(--card--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/*Estilos para el dropdown del botón de usuario*/
+
+.dropdown-menu {
+  
+  min-width: 170px;
+  top: 80px;
+  padding: 0.2rem;
+}
+
+.dropdown-menu button {
+  background: none;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.dropdown-menu button:hover {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  border-radius: 6px;
+}
+
 /*Estilos del contenido del user*/
 
 .users__info {
@@ -67,6 +120,7 @@ body::before {
     opacity: 0;
     transform: scaleX(0);
   }
+
   to {
     opacity: 1;
     transform: scaleX(1);
@@ -81,6 +135,7 @@ body::before {
     opacity: 0;
     transform: scale(0.5);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -121,7 +176,8 @@ body::before {
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: popIn 1.5s ease-out forwards;
-  animation-delay: var(--delay, 0s); /* por si usas delay en línea */
+  animation-delay: var(--delay, 0s);
+  /* por si usas delay en línea */
 }
 
 /* Hover */
@@ -157,7 +213,7 @@ body::before {
 }
 
 /* Solo mostrar cuando el cursor está sobre el botón */
-.user-action__btn:hover + .user-action__label {
+.user-action__btn:hover+.user-action__label {
   opacity: 1;
   transform: translateY(0);
 }
