@@ -54,6 +54,9 @@
 #### Captura de pantalla de Inicio con un usuario creado
 ![Con un Usuario](./assets/captures/home/RindeMas-homeUser1.png)
 
+#### Captura de pantalla de Inicio con foto de perfil en un usuario
+![Foto de perfil](./assets/captures/home/RindeMas-homePhotoProfile.png)
+
 #### Captura de pantalla de Inicio con cinco usuarios creados
 ![Con 5 Usuarios](./assets/captures/home/RindeMas-homeUser5.png)
 
