@@ -24,88 +24,65 @@
 - ✅ Estructura HTML inicial
 - ✅ Imagen de fondo
 - ✅ Estilos base en CSS
++ 🛠️ En desarrollo: Vincular con página de routine.html
 + 🛠️ En desarrollo: Responsive design
 
 ---
 
 ## ✨ Funcionalidades
 
-- Página de bienvenida con título y selección de perfil
-- Tarjetas visuales para cada usuario
-- Botón para añadir nuevos usuarios
-- Formulario con HTML y CSS siguiendo metodología BEM
-- Preparado para integración futura con LocalStorage y backend
-- Añadir y editar perfiles de usuario
-- Eliminar usuarios de forma individual
-- Mostrar botón "Añadir usuario" solo si hay menos de 6
-- Sincronización con localStorage (persistencia de usuarios)
-- Interfaz amigable y adaptable
-- Eliminación múltiple por selección
-- Cuenta regresiva al eliminar usuario(s)
+- Interfaz visual con selección de perfiles
+- Creación de usuario con formulario validado
+- Edición de perfiles existentes
+- Prevención de duplicados (nombre y apellido)
+- Alerta visual para eliminar (individual o masivo)
+- Cuenta regresiva antes de eliminar usuarios
+- Visualización de hasta 6 usuarios
+- Persistencia de datos con `localStorage`
+- Animaciones suaves y mensajes informativos
+- Estructura modular de JS y CSS
+
+---
+
+## 🖼️ Capturas de pantalla
+
+### Página de Inicio
+![Inicio](./assets/captures/home/RindeMas-home.png)
+![Con un Usuario](./assets/captures/home/RindeMas-homeUser1.png)
+![Con 5 Usuarios](./assets/captures/home/RindeMas-homeUser5.png)
+![Con 6 Usuarios](./assets/captures/home/RindeMas-homeUser6.png)
+
+### Página de Usuario
+![Cargando Usuario](./assets/captures/user/RindeMas-userLoading.png)
+![Vista Usuario](./assets/captures/user/RindeMas-userPage.png)
+![Vista Botones Usuario](./assets/captures/user/RindeMas-userButtons.png)
 
 ---
 
 ## 📂 Estructura del proyecto
 
 ```plaintext
-
 RindeMas/
-├── .vscode/
-│   └── settings.json
 ├── assets/
+│   ├── captures/
 │   ├── images/
-│   │   └── Fondo-Usuario.png
 │   ├── logo/
-│   │   ├── favicon-16x16.png
-│   │   └── logo.png
 │   └── wireframe/
-│       ├── RindeMás-Ejercicios.png
-│       ├── RindeMás-Inicio.png
-│       ├── RindeMás-Rutina.png
-│       └── RindeMás-Usuario.png
 ├── css/
-│   ├── style.css
 │   ├── base/
-│   │   ├── layout.css
-│   │   ├── typography.css
-│   │   └── variables.css
 │   ├── components/
-│   │   ├── card.css
-│   │   ├── checkbox.css
-│   │   ├── countdown.css
-│   │   ├── dialog.css
-│   │   ├── dropdown.css
-│   │   ├── footer.css
-│   │   ├── form.css
-│   │   ├── header.css
-│   │   ├── message.css
-│   │   └── utility.css
-│   └── pages/
-│       └── home.css
+│   ├── pages/
+│   ├── style.css
+│   └── user-main.css
 ├── data/
 │   └── exercises.json
 ├── js/
 │   ├── pages/
-│   │   └── home/
-│   │       ├── eventHandlers.js
-│   │       ├── formHandler.js
-│   │       ├── main.js
-│   │       └── userRenderer.js
 │   └── shared/
-│       ├── components/
-│       │   ├── confirmation.js
-│       │   └── ui.js
-│       ├── config/
-│       │   └── constants.js
-│       └── utils/
-│           ├── helpers.js
-│           └── storage.js
 ├── pages/
 │   └── user.html
 ├── index.html
-├── .gitignore
-├── LICENSE
-└── README.md
+├── README.md
 
 ```
 
