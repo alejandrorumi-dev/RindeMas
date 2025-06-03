@@ -85,3 +85,30 @@
 .form__back-btn:hover {
   color: var(--bg-color);
 }
+
+/* CAMPO DE SUBIR FOTO */
+.form__input[type="file"] {
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* BOTÓN DE QUITAR FOTO */
+.form__remove-photo {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.form__remove-photo:hover {
+  background-color: #c9302c;
+}
