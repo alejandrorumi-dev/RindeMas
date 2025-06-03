@@ -137,4 +137,18 @@ function setupUserCardEvents(card, user, index) {
 
     // Event listener para cambios en checkbox
     checkbox.addEventListener("change", updateBulkActionsVisibility);
+
+    // Ir a la página del usuario al hacer clic en la tarjeta (fuera del menú)
+    card.addEventListener("click", (e) => {
+        const clickedElement = e.target;
+        const esMenu = clickedElement.closest(".user_dropdown");
+        const esCheckbox = clickedElement.closest(".select-user-checkbox");
+
+        if (!esMenu && !esCheckbox) {
+            localStorage.setItem("usuarioActual", JSON.stringify(user));
+            window.location.href = "../pages/user.html"; // ✅ ¡Esta es la ruta correcta desde index.html!
+        }
+    });
+
+
 }
