@@ -27,6 +27,14 @@ export function renderUsers() {
     container.style.display = users.length === 0 ? "flex" : "grid";
     container.style.justifyContent = users.length === 0 ? "center" : "";
 
+    // *** NUEVO: Añadir clase para muchas tarjetas ***
+    const totalCards = users.length + (users.length < CONFIG.MAX_USERS ? 1 : 0); // usuarios + botón añadir
+    if (totalCards >= 4) {
+        container.classList.add("many-cards");
+    } else {
+        container.classList.remove("many-cards");
+    }
+
     // Añadir el botón "Añadir Usuario" si no está
     if (!container.contains(staticButton)) {
         container.appendChild(staticButton);
