@@ -47,14 +47,28 @@
 ## 🖼️ Capturas de pantalla
 
 ### Página de Inicio
+
+#### Captura de pantalla de Inicio
 ![Inicio](./assets/captures/home/RindeMas-home.png)
+
+#### Captura de pantalla de Inicio con un usuario creado
 ![Con un Usuario](./assets/captures/home/RindeMas-homeUser1.png)
+
+#### Captura de pantalla de Inicio con cinco usuarios creados
 ![Con 5 Usuarios](./assets/captures/home/RindeMas-homeUser5.png)
+
+#### Captura de pantalla de Inicio con seis usuarios creados, el máximo permitido
 ![Con 6 Usuarios](./assets/captures/home/RindeMas-homeUser6.png)
 
 ### Página de Usuario
+
+#### Captura de pantalla de Inicio a la página del Usuario
 ![Cargando Usuario](./assets/captures/user/RindeMas-userLoading.png)
+
+#### Captura de pantalla de Usuario
 ![Vista Usuario](./assets/captures/user/RindeMas-userPage.png)
+
+#### Captura de pantalla del funcionamiento de los botones de Usuario
 ![Vista Botones Usuario](./assets/captures/user/RindeMas-userButtons.png)
 
 ---
