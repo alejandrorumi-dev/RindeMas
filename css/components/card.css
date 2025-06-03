@@ -112,9 +112,15 @@
 }
 
 .user__photo {
-  width: 80px;
-  height: 80px;
+  width: 112px;
+  height: 112px;
   object-fit: cover;
   border-radius: 50%;
+  box-shadow: 0 0 10px var(--bg-color);
   margin-bottom: 1rem;
+}
+
+.users__cards.many-cards .user__photo {
+  width: 88px;
+  height: 88px;
 }
