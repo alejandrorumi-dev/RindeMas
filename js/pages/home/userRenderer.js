@@ -146,7 +146,7 @@ function setupUserCardEvents(card, user, index) {
 
         if (!esMenu && !esCheckbox) {
             localStorage.setItem("usuarioActual", JSON.stringify(user));
-            window.location.href = "../pages/user.html"; // ✅ ¡Esta es la ruta correcta desde index.html!
+            window.location.href = "/RindeMas/pages/user.html"; // ✅ ¡Esta es la ruta correcta desde index.html!
         }
     });
 
