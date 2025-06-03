@@ -72,13 +72,20 @@ function createUserCard(user, index) {
     card.classList.add("user_card");
     const color = getColorFromName(user.name, user.lastName);
 
+    // HTML condicional: imagen o icono por defecto
+    const iconHTML = user.image
+        ? `<img class="user__photo" src="${user.image}" alt="${user.name}">`
+        : `
+            <div class="users__icon-svg" style="background-color:${color}">
+                <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
+                    <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
+                </svg>
+            </div>
+        `;
+
     card.innerHTML = `
         <input type="checkbox" class="select-user-checkbox" style="display: none;" data-index="${index}">
-        <div class="users__icon-svg" style="background-color:${color}">
-            <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
-                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
-            </svg>
-        </div>
+        ${iconHTML}
         <span class="user_name">${user.name} ${user.lastName}</span>
         <div class="user_dropdown">
             <button class="dropdown-toggle" title="Acciones">⋮</button>
@@ -86,6 +93,7 @@ function createUserCard(user, index) {
                 <button class="edit-user-btn">Editar</button>
                 <button class="delete-user-btn">Eliminar</button>
                 <button class="toggle-select-btn">Seleccionar</button>
+                ${user.image ? `<button class="remove-photo-btn">Eliminar foto de perfil</button>` : ""}
             </div>
         </div>
     `;
@@ -156,6 +164,17 @@ function setupUserCardEvents(card, user, index) {
             navigateToUser(user);
         }
     });
+
+    // Eliminar foto de perfil si existe el botón
+    const removePhotoBtn = card.querySelector(".remove-photo-btn");
+    if (removePhotoBtn) {
+        removePhotoBtn.addEventListener("click", () => {
+            const users = getUsers();
+            users[index].image = null;
+            localStorage.setItem("users", JSON.stringify(users));
+            renderUsers();
+        });
+    }
 }
 
 /**
