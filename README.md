@@ -21,9 +21,9 @@
 
 ### 2. **Página de usuario (En desarrollo 🛠️)**
 
-+ 🛠️ En desarrollo: Estructura HTML inicial
-+ 🛠️ En desarrollo: Imagen de fondo
-+ 🛠️ En desarrollo: Estilos base en CSS
+- ✅ Estructura HTML inicial
+- ✅ Imagen de fondo
+- ✅ Estilos base en CSS
 + 🛠️ En desarrollo: Responsive design
 
 ---
