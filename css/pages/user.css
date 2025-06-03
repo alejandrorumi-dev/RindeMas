@@ -172,7 +172,7 @@ body::before {
 }
 
 .user-action__btn:hover .users__icon-svg {
-  stroke: var(--bg-color);
+  stroke: var(--text-color);
   width: 80px;
   height: 80px;
 }
