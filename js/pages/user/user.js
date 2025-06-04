@@ -91,12 +91,7 @@ function renderChangeUserButton() {
 	const goHomeBtn = document.createElement("button");
 	goHomeBtn.innerHTML = "🏠 Ir a inicio";
 	goHomeBtn.addEventListener("click", () => {
-		const user = JSON.parse(localStorage.getItem("usuarioActual"));
-		if (!user) return;
-
-		const fullName = `${user.name} ${user.lastName}`;
-		const color = getColorFromName(user.name, user.lastName);
-		showLoadingOverlay(fullName, color, "regresando");
+		showLoadingOverlay("regresando");
 
 		setTimeout(() => {
 			// Asegurar la navegación correcta al index.html
@@ -107,7 +102,6 @@ function renderChangeUserButton() {
 	menu.appendChild(changeBtn);
 	menu.appendChild(separator);
 	menu.appendChild(goHomeBtn);
-
 
 	avatarBtn.addEventListener("click", (e) => {
 		e.stopPropagation();
@@ -142,32 +136,42 @@ function closeAllDropdownMenus() {
 	});
 }
 
-function showLoadingOverlay(name, color, action = "cargando") {
+function showLoadingOverlay(action = "cargando") {
 	const overlay = document.createElement("div");
 	overlay.className = "loading-overlay";
 	
-	// Definir el mensaje según la acción
-	let message;
+	let content;
 	if (action === "regresando") {
-		message = `Regresando a inicio...`;
+		// Para regresar a inicio: solo mensaje y spinner, sin ícono
+		content = `
+			<div class="loading-content">
+				<h2 class="loading-title">Regresando a inicio...</h2>
+				<div class="loading-spinner"><div class="spinner"></div></div>
+			</div>
+		`;
 	} else {
-		message = `Cargando, ${name}...`;
+		// Para cambio de usuario: con ícono
+		const user = JSON.parse(localStorage.getItem("usuarioActual"));
+		const fullName = `${user.name} ${user.lastName}`;
+		const color = getColorFromName(user.name, user.lastName);
+		
+		content = `
+			<div class="loading-content">
+				<div class="loading-user-icon" style="background-color: ${color}">
+					<svg viewBox="0 0 24 24" fill="currentColor" width="64" height="64">
+						<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4
+						7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4
+						c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2
+						c0-3.2-6.4-4.8-9.6-4.8z"/>
+					</svg>
+				</div>
+				<h2 class="loading-title">Cargando, ${fullName}...</h2>
+				<div class="loading-spinner"><div class="spinner"></div></div>
+			</div>
+		`;
 	}
 	
-	overlay.innerHTML = `
-		<div class="loading-content">
-			<div class="loading-user-icon" style="background-color: ${color}">
-				<svg viewBox="0 0 24 24" fill="currentColor" width="64" height="64">
-					<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4
-					7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4
-					c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2
-					c0-3.2-6.4-4.8-9.6-4.8z"/>
-				</svg>
-			</div>
-			<h2 class="loading-title">${message}</h2>
-			<div class="loading-spinner"><div class="spinner"></div></div>
-		</div>
-	`;
+	overlay.innerHTML = content;
 	document.body.appendChild(overlay);
 	requestAnimationFrame(() => overlay.classList.add("active"));
 }
@@ -211,9 +215,8 @@ function showUserSwitcher(users, currentUser) {
 			const selected = users.find(u => u.name === name && u.lastName === lastName);
 			if (selected) {
 				localStorage.setItem("usuarioActual", JSON.stringify(selected));
-				showLoadingOverlay(`${selected.name} ${selected.lastName}`, getColorFromName(selected.name, selected.lastName));
+				showLoadingOverlay("cargando");
 				setTimeout(() => window.location.reload(), 2500);
-
 			}
 		});
 	});
