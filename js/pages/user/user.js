@@ -1,3 +1,6 @@
+// Importar la función getColorFromName desde helpers.js
+import { getColorFromName } from "../../shared/utils/helpers.js";
+
 document.addEventListener("DOMContentLoaded", () => {
 	const user = JSON.parse(localStorage.getItem("usuarioActual"));
 	const h2 = document.querySelector(".users__info--title");
@@ -5,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (!user || !h2) return;
 
 	const nombre = `${user.name.toUpperCase()}`;
-	const textoInicial = h2.textContent; // "¡BIENVENIDO, USUARIO!"
+	const textoInicial = h2.textContent;
 	const partes = textoInicial.split("USUARIO");
 
 	if (partes.length !== 2) return;
@@ -13,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	const [inicio, fin] = partes;
 	let borrarIndex = "USUARIO".length;
 
-	// Esperar 1.5 segundos antes de empezar
 	setTimeout(() => {
 		const borrar = setInterval(() => {
 			borrarIndex--;
@@ -33,15 +35,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	renderChangeUserButton();
 });
 
+// La función getColorFromName se importa desde helpers.js
+
 function renderChangeUserButton() {
 	const user = JSON.parse(localStorage.getItem("usuarioActual"));
+	const users = JSON.parse(localStorage.getItem("users")) || [];
 	if (!user) return;
 
-	// Contenedor del botón + dropdown
 	const container = document.createElement("div");
 	container.className = "change-user-container user_dropdown";
 
-	// Botón avatar
 	const avatarBtn = document.createElement("button");
 	avatarBtn.className = "change-user-btn dropdown-toggle";
 	avatarBtn.title = "Menú de usuario";
@@ -66,30 +69,66 @@ function renderChangeUserButton() {
 	}
 	avatarBtn.appendChild(avatar);
 
-	// Menú desplegable
 	const menu = document.createElement("div");
 	menu.className = "dropdown-menu";
 	menu.style.display = "none";
 
+	// Cambiar de usuario con ícono
 	const changeBtn = document.createElement("button");
-	changeBtn.textContent = "Cambiar de usuario";
+	changeBtn.innerHTML = "👤 Cambiar de usuario";
 	changeBtn.addEventListener("click", () => {
-		localStorage.removeItem("usuarioActual");
-		window.location.href = "../../index.html";
+		menu.style.display = "none";
+		showUserSwitcher(users, user);
+	});
+
+	// Separador visual
+	const separator = document.createElement("hr");
+	separator.style.margin = "0.5rem 0";
+	separator.style.border = "none";
+	separator.style.borderTop = "1px solid rgba(0, 0, 0, 0.1)";
+
+	// Ir a inicio con ícono
+	const goHomeBtn = document.createElement("button");
+	goHomeBtn.innerHTML = "🏠 Ir a inicio";
+	goHomeBtn.addEventListener("click", () => {
+		const user = JSON.parse(localStorage.getItem("usuarioActual"));
+		if (!user) return;
+
+		const fullName = `${user.name} ${user.lastName}`;
+		const color = getColorFromName(user.name, user.lastName);
+		showLoadingOverlay(fullName, color, "regresando");
+
+		setTimeout(() => {
+			// Asegurar la navegación correcta al index.html
+			window.location.href = "../index.html";
+		}, 2500);
 	});
 
 	menu.appendChild(changeBtn);
+	menu.appendChild(separator);
+	menu.appendChild(goHomeBtn);
 
-	// Mostrar/ocultar menú al hacer clic en el avatar
+
 	avatarBtn.addEventListener("click", (e) => {
 		e.stopPropagation();
-		closeAllDropdownMenus();
-		menu.style.display = menu.style.display === "none" ? "flex" : "none";
+
+		// Si el menú ya está visible, simplemente lo cerramos
+		if (menu.style.display === "flex") {
+			menu.style.display = "none";
+		} else {
+			// Cerramos cualquier otro abierto y mostramos este
+			closeAllDropdownMenus();
+			menu.style.display = "flex";
+		}
 	});
 
-	// Cerrar menú si haces clic fuera
-	document.addEventListener("click", () => {
-		menu.style.display = "none";
+	document.addEventListener("click", (e) => {
+		const isClickInsideMenu = e.target.closest(".dropdown-menu");
+		const isClickOnToggle = e.target.closest(".dropdown-toggle");
+
+		if (!isClickInsideMenu && !isClickOnToggle) {
+			menu.style.display = "none";
+		}
 	});
 
 	container.appendChild(avatarBtn);
@@ -100,5 +139,82 @@ function renderChangeUserButton() {
 function closeAllDropdownMenus() {
 	document.querySelectorAll(".dropdown-menu").forEach(menu => {
 		menu.style.display = "none";
+	});
+}
+
+function showLoadingOverlay(name, color, action = "cargando") {
+	const overlay = document.createElement("div");
+	overlay.className = "loading-overlay";
+	
+	// Definir el mensaje según la acción
+	let message;
+	if (action === "regresando") {
+		message = `Regresando a inicio...`;
+	} else {
+		message = `Cargando, ${name}...`;
+	}
+	
+	overlay.innerHTML = `
+		<div class="loading-content">
+			<div class="loading-user-icon" style="background-color: ${color}">
+				<svg viewBox="0 0 24 24" fill="currentColor" width="64" height="64">
+					<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4
+					7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4
+					c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2
+					c0-3.2-6.4-4.8-9.6-4.8z"/>
+				</svg>
+			</div>
+			<h2 class="loading-title">${message}</h2>
+			<div class="loading-spinner"><div class="spinner"></div></div>
+		</div>
+	`;
+	document.body.appendChild(overlay);
+	requestAnimationFrame(() => overlay.classList.add("active"));
+}
+
+function showUserSwitcher(users, currentUser) {
+	const overlay = document.createElement("div");
+	overlay.className = "user-switcher-overlay";
+	overlay.innerHTML = `
+		<div class="user-switcher">
+			<h2>Selecciona un usuario</h2>
+			<div class="user-switcher__list">
+				${users.map(user => {
+		const isCurrent = user.name === currentUser.name && user.lastName === currentUser.lastName;
+		const label = isCurrent ? `<span class='user-status'>🟢 Conectado</span>` : "";
+		const image = user.image
+			? `<img src="${user.image}" alt="${user.name}" class="user__photo">`
+			: `<div class="users__icon-svg"><svg viewBox="0 0 24 24" fill="currentColor" width="40" height="40"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>`;
+		return `
+						<div class="user-card-switch ${isCurrent ? 'current' : ''}" data-name="${user.name}" data-lastname="${user.lastName}">
+							${image}
+							<span class="user-name">${user.name} ${user.lastName}</span>
+							${label}
+						</div>
+					`;
+	}).join('') || "<p>No hay más usuarios para cambiar</p>"}
+			</div>
+			<button class="close-switcher">Cerrar</button>
+		</div>
+	`;
+	document.body.appendChild(overlay);
+
+	document.querySelector(".close-switcher").addEventListener("click", () => {
+		overlay.remove();
+	});
+
+	overlay.querySelectorAll(".user-card-switch").forEach(card => {
+		if (card.classList.contains("current")) return;
+		card.addEventListener("click", () => {
+			const name = card.dataset.name;
+			const lastName = card.dataset.lastname;
+			const selected = users.find(u => u.name === name && u.lastName === lastName);
+			if (selected) {
+				localStorage.setItem("usuarioActual", JSON.stringify(selected));
+				showLoadingOverlay(`${selected.name} ${selected.lastName}`, getColorFromName(selected.name, selected.lastName));
+				setTimeout(() => window.location.reload(), 2500);
+
+			}
+		});
 	});
 }
