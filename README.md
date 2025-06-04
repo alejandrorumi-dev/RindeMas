@@ -106,8 +106,17 @@
 #### Captura de pantalla de Usuario
 ![Vista Usuario](./assets/captures/user/RindeMas-userPage.png)
 
+#### Captura de pantalla de menú desplegable en página de usuario
+![Menú desplegable página Usuario](./assets/captures/user/RindeMas-dropdownUserPage.png)
+
+#### Captura de pantalla de cambiar usuario
+![Cambiar usuario](./assets/captures/user/RindeMas-changeUser.png)
+
 #### Captura de pantalla del funcionamiento de los botones de Usuario
 ![Vista Botones Usuario](./assets/captures/user/RindeMas-userButtons.png)
+
+#### Captura de pantalla de regresando a pantalla de Inicio
+![Regresar a Inicio](./assets/captures/user/RindeMas-LoadingHomePage.png)
 
 ---
 
