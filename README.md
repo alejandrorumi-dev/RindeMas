@@ -24,6 +24,12 @@
 - ✅ Estructura HTML inicial
 - ✅ Imagen de fondo
 - ✅ Estilos base en CSS
+- ✅ Botones para el manejo de la página de usuario
+- ✅ Cambiar de usuario
+- ✅ Volver a Inicio
+- ✅ Implementación de usuario 
+- ✅ Implementación para ver todos los usuarios que hay creados
+- ✅ Implementación para ver que usuario está conectado
 + 🛠️ En desarrollo: Vincular con página de routine.html
 + 🛠️ En desarrollo: Responsive design
 
