@@ -51,8 +51,17 @@
 #### Captura de pantalla de Inicio
 ![Inicio](./assets/captures/home/RindeMas-home.png)
 
+#### Captura de pantalla de formulario para agregar un usuario
+![Formulario agregar Usuario](./assets/captures/home/RindeMas-formAddUser.png)
+
+#### Captura de pantalla con mensaje de confirmación tras agregar usuario
+![Mensaje de confirmación agregar Usuario](./assets/captures/home/RindeMas-formMessageConfirm.png)
+
 #### Captura de pantalla de Inicio con un usuario creado
 ![Con un Usuario](./assets/captures/home/RindeMas-homeUser1.png)
+
+#### Captura de pantalla de formulario con mensaje de error
+![Mensaje de error](./assets/captures/home/RindeMas-formMessage.png)
 
 #### Captura de pantalla de Inicio con foto de perfil en un usuario
 ![Foto de perfil](./assets/captures/home/RindeMas-homePhotoProfile.png)
@@ -62,6 +71,30 @@
 
 #### Captura de pantalla de Inicio con seis usuarios creados, el máximo permitido
 ![Con 6 Usuarios](./assets/captures/home/RindeMas-homeUser6.png)
+
+#### Captura de pantalla de formulario para editar usuario
+![Formulario editar Usuario](./assets/captures/home/RindeMas-formEditUser.png)
+
+#### Captura de pantalla con mensaje de confirmación tras editar usuario
+![Mensaje de confirmación editar Usuario](./assets/captures/home/RindeMas-formEditUserMessage.png)
+
+#### Captura de pantalla de formulario con mensaje de alerta
+![Mensaje de alerta editar Usuario](./assets/captures/home/RindeMas-formMessageNoChanges.png)
+
+#### Captura de pantalla de eliminar usuario
+![Eliminar Usuario](./assets/captures/home/RindeMas-deleteUser.png)
+
+#### Captura de pantalla de cuenta regresiva para eliminar usuario
+![Cuenta regresiva](./assets/captures/home/RindeMas-countdown.png)
+
+#### Captura de pantalla con mensaje de cofnirmación tras eliminar usuario
+![Mensaje de confirmación eliminar Usuario](./assets/captures/home/RindeMas-deleteUserMessage.png)
+
+#### Captura de pantalla de menú desplegable
+![Menú desplegable](./assets/captures/home/RindeMas-dropdown.png)
+
+#### Captura de pantalla de checkbox
+![Seleccionar Usuario](./assets/captures/home/RindeMas-selectUsers.png)
 
 ---
 
