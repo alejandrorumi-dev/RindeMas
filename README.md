@@ -87,7 +87,7 @@
 #### Captura de pantalla de cuenta regresiva para eliminar usuario
 ![Cuenta regresiva](./assets/captures/home/RindeMas-countdown.png)
 
-#### Captura de pantalla con mensaje de cofnirmación tras eliminar usuario
+#### Captura de pantalla con mensaje de confirmación tras eliminar usuario
 ![Mensaje de confirmación eliminar Usuario](./assets/captures/home/RindeMas-deleteUserMessage.png)
 
 #### Captura de pantalla de menú desplegable
