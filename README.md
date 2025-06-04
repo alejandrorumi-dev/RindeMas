@@ -2,127 +2,59 @@
 
 **RindeMás** es una aplicación web personal para gestionar rutinas de entrenamiento y usuarios asociados. Pensada como herramienta de uso diario para ti y tu entorno (familiares, amigos), permite añadir perfiles personalizados y organizar sesiones de ejercicio según el día o grupo muscular.
 
+---
+
 ## 🚀 Estado del proyecto
 
-### 1. **Página de inicio ✅**
+### 🏠 Página de inicio ✅
 
-- ✅ Estructura HTML finalizada
-- ✅ Estilos CSS aplicados (colores, tipografía, grid, botones, etc.)
-- ✅ Formulario de creación de usuarios finalizado
-- ✅ Edición de usuario con validación visual
-- ✅ Prevención de usuarios duplicados
-- ✅ Almacenamiento local con `localStorage`
-- ✅ Selección múltiple y eliminación masiva
-- ✅ Eliminación con cuenta regresiva
-- ✅ Transiciones y alertas visuales estilizadas
-+ 🛠️ En desarrollo: Responsive design
-
----
-
-### 2. **Página de usuario (En desarrollo 🛠️)**
-
-- ✅ Estructura HTML inicial
-- ✅ Imagen de fondo
-- ✅ Estilos base en CSS
-- ✅ Botones para el manejo de la página de usuario
-- ✅ Cambiar de usuario
-- ✅ Volver a Inicio
-- ✅ Implementación de usuario 
-- ✅ Implementación para ver todos los usuarios que hay creados
-- ✅ Implementación para ver que usuario está conectado
-+ 🛠️ En desarrollo: Vincular con página de routine.html
-+ 🛠️ En desarrollo: Responsive design
-
----
-
-## ✨ Funcionalidades
-
-- Interfaz visual con selección de perfiles
-- Creación de usuario con formulario validado
-- Edición de perfiles existentes
-- Prevención de duplicados (nombre y apellido)
-- Alerta visual para eliminar (individual o masivo)
-- Cuenta regresiva antes de eliminar usuarios
-- Visualización de hasta 6 usuarios
+- Estructura HTML finalizada
+- Estilos CSS completos
+- Formulario de creación de usuarios funcional
+- Validación de nombre y apellido duplicados
+- Edición con validación visual y detección de cambios
+- Alerta visual al eliminar (individual o múltiple)
+- Eliminación con cuenta regresiva
+- Animaciones suaves y feedback visual
+- Selección múltiple de usuarios
+- Límite máximo de 6 usuarios con control visual
 - Persistencia de datos con `localStorage`
-- Animaciones suaves y mensajes informativos
-- Estructura modular de JS y CSS
+- Estructura modular de CSS y JS
+- 🛠️ En desarrollo: Responsive design
+
+---
+
+### 👤 Página de usuario ✅
+
+- Carga con animación personalizada y foto de perfil (si existe)
+- Fondo personalizado
+- Botones para cambiar de usuario y volver al inicio
+- Menú desplegable con acciones
+- Vista de todos los usuarios creados
+- Marcado del usuario activo ("Conectado")
+- Relleno visual de espacio con placeholders hasta 6 tarjetas
+- Transición visual al regresar a inicio
+- 🛠️ En desarrollo: Vinculación con rutina personalizada
+
+---
+
+## ✨ Funcionalidades principales
+
+- Creación, edición y eliminación de perfiles
+- Validación en tiempo real con mensajes estilizados
+- Carga visual personalizada por usuario
+- Cambios dinámicos en la interfaz según estado
+- Animaciones de entrada y salida
+- Vista interactiva de usuarios en `user.html`
+- Feedback visual por acciones exitosas o con error
+- Contenedor dinámico que se adapta visualmente a la cantidad de usuarios
 
 ---
 
 ## 🖼️ Capturas de pantalla
 
-### Página de Inicio
-
-#### Captura de pantalla de Inicio
-![Inicio](./assets/captures/home/RindeMas-home.png)
-
-#### Captura de pantalla de formulario para agregar un usuario
-![Formulario agregar Usuario](./assets/captures/home/RindeMas-formAddUser.png)
-
-#### Captura de pantalla con mensaje de confirmación tras agregar usuario
-![Mensaje de confirmación agregar Usuario](./assets/captures/home/RindeMas-formMessageConfirm.png)
-
-#### Captura de pantalla de Inicio con un usuario creado
-![Con un Usuario](./assets/captures/home/RindeMas-homeUser1.png)
-
-#### Captura de pantalla de formulario con mensaje de error
-![Mensaje de error](./assets/captures/home/RindeMas-formMessage.png)
-
-#### Captura de pantalla de Inicio con foto de perfil en un usuario
-![Foto de perfil](./assets/captures/home/RindeMas-homePhotoProfile.png)
-
-#### Captura de pantalla de Inicio con cinco usuarios creados
-![Con 5 Usuarios](./assets/captures/home/RindeMas-homeUser5.png)
-
-#### Captura de pantalla de Inicio con seis usuarios creados, el máximo permitido
-![Con 6 Usuarios](./assets/captures/home/RindeMas-homeUser6.png)
-
-#### Captura de pantalla de formulario para editar usuario
-![Formulario editar Usuario](./assets/captures/home/RindeMas-formEditUser.png)
-
-#### Captura de pantalla con mensaje de confirmación tras editar usuario
-![Mensaje de confirmación editar Usuario](./assets/captures/home/RindeMas-formEditUserMessage.png)
-
-#### Captura de pantalla de formulario con mensaje de alerta
-![Mensaje de alerta editar Usuario](./assets/captures/home/RindeMas-formMessageNoChanges.png)
-
-#### Captura de pantalla de eliminar usuario
-![Eliminar Usuario](./assets/captures/home/RindeMas-deleteUser.png)
-
-#### Captura de pantalla de cuenta regresiva para eliminar usuario
-![Cuenta regresiva](./assets/captures/home/RindeMas-countdown.png)
-
-#### Captura de pantalla con mensaje de confirmación tras eliminar usuario
-![Mensaje de confirmación eliminar Usuario](./assets/captures/home/RindeMas-deleteUserMessage.png)
-
-#### Captura de pantalla de menú desplegable
-![Menú desplegable](./assets/captures/home/RindeMas-dropdown.png)
-
-#### Captura de pantalla de checkbox
-![Seleccionar Usuario](./assets/captures/home/RindeMas-selectUsers.png)
-
----
-
-### Página de Usuario
-
-#### Captura de pantalla de Inicio a la página del Usuario
-![Cargando Usuario](./assets/captures/user/RindeMas-userLoading.png)
-
-#### Captura de pantalla de Usuario
-![Vista Usuario](./assets/captures/user/RindeMas-userPage.png)
-
-#### Captura de pantalla de menú desplegable en página de usuario
-![Menú desplegable página Usuario](./assets/captures/user/RindeMas-dropdownUserPage.png)
-
-#### Captura de pantalla de cambiar usuario
-![Cambiar usuario](./assets/captures/user/RindeMas-changeUser.png)
-
-#### Captura de pantalla del funcionamiento de los botones de Usuario
-![Vista Botones Usuario](./assets/captures/user/RindeMas-userButtons.png)
-
-#### Captura de pantalla de regresando a pantalla de Inicio
-![Regresar a Inicio](./assets/captures/user/RindeMas-LoadingHomePage.png)
+> Puedes ver una galería completa de capturas en el repositorio:  
+> `/assets/captures/home/` y `/assets/captures/user/`
 
 ---
 
@@ -163,6 +95,7 @@ RindeMas/
 - localStorage para persistencia de usuarios
 - Google Fonts (Titillium Web, Rajdhani)
 - Metodología BEM (Bloques, Elementos, Modificadores)
+- Inteligencia Artificial (asistencia en diseño, estructura y validación de funcionalidades)
 
 ---
 
@@ -201,8 +134,10 @@ Puedes abrir el proyecto localmente así:
 
 ## 🌐 Demo en vivo
 
-Puedes ver la página de inicio funcionando aquí:
-[https://alejandrorumi-dev.github.io/RindeMas/](https://alejandrorumi-dev.github.io/RindeMas/)
+👉 Puedes probar la app en:  
+🔗 [https://alejandrorumi-dev.github.io/RindeMas/](https://alejandrorumi-dev.github.io/RindeMas/)
+
+---
 
 ## 👨‍💻 Autor
 
