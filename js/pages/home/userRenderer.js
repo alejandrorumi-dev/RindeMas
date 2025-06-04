@@ -189,13 +189,29 @@ function navigateToUser(user) {
     const userName = `${user.name} ${user.lastName}`;
     const userColor = getColorFromName(user.name, user.lastName);
 
-    loadingOverlay.innerHTML = `
-        <div class="loading-content">
+    // Determinar qué mostrar en el ícono: foto del usuario o SVG por defecto
+    let iconHTML;
+    if (user.image) {
+        // Si tiene foto, mostrar la foto
+        iconHTML = `
+            <div class="loading-user-icon">
+                <img src="${user.image}" alt="${user.name}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+            </div>
+        `;
+    } else {
+        // Si no tiene foto, mostrar SVG con color
+        iconHTML = `
             <div class="loading-user-icon" style="background-color: ${userColor}">
                 <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
                     <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
                 </svg>
             </div>
+        `;
+    }
+
+    loadingOverlay.innerHTML = `
+        <div class="loading-content">
+            ${iconHTML}
             <h2 class="loading-title">Cargando, ${userName}...</h2>
             <div class="loading-spinner">
                 <div class="spinner"></div>
