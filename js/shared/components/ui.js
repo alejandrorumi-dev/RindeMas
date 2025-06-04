@@ -13,6 +13,16 @@ export function closeForm(animated = true) {
     const formSection = document.getElementById("form");
     const usersSection = document.getElementById("users");
     const form = document.getElementById("form__content");
+    // Eliminar el input y label de foto si existen
+    const photoInput = document.getElementById("form__photo");
+    if (photoInput) {
+        const label = photoInput.previousElementSibling;
+        photoInput.remove();
+        if (label && label.tagName === "LABEL") {
+            label.remove();
+        }
+    }
+
     const submitBtn = document.querySelector(".form__submit");
     const formTitle = document.querySelector(".form__title");
     const formMessage = document.getElementById("formMessage");
