@@ -37,19 +37,16 @@ function handleFormSubmit(e) {
     const lastName = document.getElementById("form__lastName").value.trim();
     const users = getUsers();
 
-    // Verificar si el usuario ya existe
+    const isEditing = editingIndex !== null;
+
+    // ✅ 1. Verificar si el usuario ya existe (en creación o edición)
     if (userExists(firstName, lastName, editingIndex)) {
         showFormError(MESSAGES.USER_EXISTS);
         return;
     }
 
-    // Validar límite máximo de usuarios (solo para nuevos usuarios)
-    if (!isEditing && users.length >= CONFIG.MAX_USERS) {
-        showFormError(MESSAGES.MAX_USERS_REACHED);
-        return;
-    }
-
-    if (isEditing && editingIndex !== null) {
+    // ✅ 2. Si es modo edición, validar cambios
+    if (isEditing) {
         const currentUser = users[editingIndex];
 
         const hasChanges =
@@ -76,7 +73,13 @@ function handleFormSubmit(e) {
         showBigMessage(MESSAGES.USER_EDITED);
         renderUsers();
     } else {
-        // Modo creación
+        // ✅ 3. Validar límite máximo de usuarios
+        if (users.length >= CONFIG.MAX_USERS) {
+            showFormError(MESSAGES.MAX_USERS_REACHED);
+            return;
+        }
+
+        // ✅ 4. Crear nuevo usuario
         const newUser = { name: firstName, lastName: lastName };
         addUser(newUser);
         closeForm();
